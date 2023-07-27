@@ -120,6 +120,7 @@ public class House {
             logger.info("House's Information added successfully");
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

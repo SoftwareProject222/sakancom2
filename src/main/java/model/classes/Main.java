@@ -20,6 +20,8 @@ public class Main {
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
     static String p="memesa32002@";
+    private static String price="price";
+    private static String services="services";
     public static void displayHouses(int ownerID) {
         try {
             Connection con = DriverManager.getConnection(url,user,p);
@@ -27,7 +29,8 @@ public class Main {
             ResultSet result = stmt.executeQuery("select * from house where id_owner='" + ownerID + "'");
             logger.info("idHouse\t location\t\t services\t\t price");
             while (result.next()) {
-                logger.info(result.getInt("idhouse") + "\t" + result.getString("location") + "\t\t" + result.getString("services") + "\t\t" + result.getDouble("price") + " JD");
+                String output=result.getInt("idhouse") + "\t" + result.getString("location") + "\t\t" + result.getString("services") + "\t\t" + result.getDouble(price) + " JD";
+                logger.info(output);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,13 +44,14 @@ public class Main {
             logger.info("All houses in the system: ");
             logger.info("idHouse\t location\t\t services\t\t price\t\t idOwner");
             while (result.next()) {
-                logger.info(result.getInt("idhouse")+"\t"+result.getString("location")+"\t"+result.getString("services")+"\t"+ result.getDouble("price")+" JD\t"+ result.getInt("id_owner"));
+                String output=result.getInt("idhouse")+"\t"+result.getString("location")+"\t"+result.getString("services")+"\t"+ result.getDouble(price)+" JD\t"+ result.getInt("id_owner");
+                logger.info(output);
             }
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) throws URISyntaxException, IOException, SQLException {
+    public void main(String[] args) throws URISyntaxException, IOException, SQLException {
 
         Login log=new Login();
         AdminPage adminPage;
@@ -82,7 +86,8 @@ public class Main {
                 }
                 logger.info("logged in successfully");
                 if (choice.equals("1")){
-                    logger.info("Hello "+username);
+                    String hello="Hello "+username;
+                    logger.info(hello);
                     while (true){
                         logger.info("1- See the requests of advertisement to accept or reject it");
                         logger.info("2- See the reservations of houses");
@@ -93,7 +98,8 @@ public class Main {
                         if(adminChoice.equals("1")){
                             //open web page
                             Desktop d=Desktop.getDesktop();
-                            d.browse(new URI("http://localhost/sakancom/table.php"));
+                            String uri="http://localhost/sakancom/table.php";
+                            d.browse(new URI(uri));
                             while (true){
                                 logger.info("1- Enter house id you want to accept its advertisement");
                                 logger.info("2- <-Back");
@@ -115,7 +121,7 @@ public class Main {
 
                         }//if admin 1
                         else if(adminChoice.equals("2")){
-                            List<Tenant> tenantList = new ArrayList();
+                            List<Tenant> tenantList = new ArrayList<>();
                             tenantList=AdminPage.seeReservations();
                             AdminPage.displayReservations(tenantList);
                         }//if admin 2
@@ -138,13 +144,13 @@ public class Main {
                                 if(updateOption.equals("1")){
                                     logger.info("The new services of the house you want to update: ");
                                     String services= scan.nextLine();
-                                    updateHouse.updateInfo("services",services,Integer.parseInt(idhouse));
+                                    updateHouse.updateInfo(this.services,services,Integer.parseInt(idhouse));
                                     updateHouse.updateMsg();
                                 }
                                 else if(updateOption.equals("2")){
                                     logger.info("The new price of the house you want to update: ");
                                     String price= scan.nextLine();
-                                    updateHouse.updateInfo("price",Double.parseDouble(price),Integer.parseInt(idhouse));
+                                    updateHouse.updateInfo(this.price,Double.parseDouble(price),Integer.parseInt(idhouse));
                                     updateHouse.updateMsg();
                                 }
                                 else if(updateOption.equals("3")){
@@ -172,7 +178,7 @@ public class Main {
 //////////////////////////////////////////////////////////////////////////////////////////////////
                 else if(choice.equals("3")){
                     logger.info("Hello "+log.getOwnerName());
-                    owner_loop:
+                    ownerLoop:
                     while (true){
                         logger.info("1- Add advertisement for an exist house");
                         logger.info("2- See all housing with all details");
@@ -208,12 +214,12 @@ public class Main {
                                 if(AddAdvertisement.getIsDuplicateHouse()){
                                     advertisement.displayReasonSameHouse();
                                 }
-                                else advertisement.displayReasonHouseNotExist();;
+                                else advertisement.displayReasonHouseNotExist();
                             }
                         }//if owner 1
                         else if (ownerChoice.equals("2")) {
-                            List<House> houseList=new ArrayList();
-                            ArrayList apart=new ArrayList<>();
+                            List<House> houseList=new ArrayList<>();
+                            List<Integer> apart=new ArrayList<>();
                             List<HouseFloor> apartInfoList = new ArrayList();
                             logger.info("Your Housing:");
                             displayHouses(log.getOwnerID());
@@ -244,11 +250,11 @@ public class Main {
                                 logger.info("Enter price(JD): ");
                                 String price=scan.nextLine();
                                 logger.info("Enter number of floors: ");
-                                String no_floors=scan.nextLine();
-                                newHouse=new House(Integer.parseInt(houseID),photo,location,services,Double.parseDouble(price),log.getOwnerID(),Integer.parseInt(no_floors));
+                                String noFloors=scan.nextLine();
+                                newHouse=new House(Integer.parseInt(houseID),photo,location,services,Double.parseDouble(price),log.getOwnerID(),Integer.parseInt(noFloors));
                                 House.addHouse(newHouse);
                                 if(!HouseFloor.findHouseFloorId(newHouse.getId())){
-                                    details_loop:
+                                    detailsLoop:
                                     while (true){
                                         logger.info("Enter the details for this new new home: ");
                                         logger.info("Enter floor number: ");
@@ -256,23 +262,23 @@ public class Main {
                                         logger.info("Enter apartment number: ");
                                         String idapart=scan.nextLine();
                                         logger.info("Enter number of bathrooms for this apartment: ");
-                                        String no_bathrooms=scan.nextLine();
+                                        String noBathrooms=scan.nextLine();
                                         logger.info("Enter number of bedrooms for this apartment: ");
-                                        String no_bedrooms=scan.nextLine();
+                                        String noBedrooms=scan.nextLine();
                                         logger.info("Is there's a balcony? yes/no: ");
                                         String balcony=scan.nextLine();
-                                        newHouseFloor=new HouseFloor(Integer.parseInt(houseID),Integer.parseInt(idfloor),Integer.parseInt(idapart),Integer.parseInt(no_bathrooms),Integer.parseInt(no_bedrooms),balcony);
+                                        newHouseFloor=new HouseFloor(Integer.parseInt(houseID),Integer.parseInt(idfloor),Integer.parseInt(idapart),Integer.parseInt(noBathrooms),Integer.parseInt(noBedrooms),balcony);
                                         logger.info(newHouseFloor.getIdHouse()+"");
                                         House.addHouseInfo(newHouseFloor);
                                         /////////
                                         logger.info("1- continue adding details\n2- add another new house\n3- back to my page");
                                         String x=scan.nextLine();
                                         if(x.equals("1")){
-                                            continue details_loop;
+                                            continue detailsLoop;
                                         } else if (x.equals("2")) {
                                             continue newHouse_loop;
                                         } else if (x.equals("3")) {
-                                            continue owner_loop;
+                                            continue ownerLoop;
                                         }
                                     }
                                 }else continue newHouse_loop;
@@ -290,7 +296,7 @@ public class Main {
                         }
 
                     }//owner loop
-                }//choice 3
+                }//choice 2
                 else if (choice.equals("2")) {
 
                 }

@@ -15,8 +15,10 @@ public class OwnerControlPanel {
     static String user="root";
     static String p="memesa32002@";
 
+    private OwnerControlPanel(){
+
+    }
     public static List<House> findHouse(int houseId) throws SQLException {
-        /*House house2=new House();*/
         List<House> houseList = new ArrayList<>();
         Connection con = DriverManager.getConnection(url,user,p);
         Statement stmt = con.createStatement();
@@ -50,8 +52,8 @@ public class OwnerControlPanel {
         }
     }
 
-    public static ArrayList findFloor(int floorId) throws SQLException {
-        ArrayList apart = new ArrayList<>();
+    public static List<Integer> findFloor(int floorId) throws SQLException {
+        List<Integer> apart = new ArrayList<>();
         Connection con = DriverManager.getConnection(url,user,p);
         Statement stmt = con.createStatement();
         ResultSet result = stmt.executeQuery("select id_apart from house_floor where  id_house='" + houseObj.getId()+"' and  id_floor='" + floorId + "' ");
@@ -61,7 +63,7 @@ public class OwnerControlPanel {
         return apart;
     }
 
-    public static void displayAparts(ArrayList apart) {
+    public static void displayAparts(List<Integer> apart) {
         logger.info("apartments of this floor: \n");
         for (int i=0;i<apart.size();i++){
             String output=apart.get(i)+"\n";

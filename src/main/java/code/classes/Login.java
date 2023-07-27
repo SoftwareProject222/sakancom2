@@ -43,12 +43,8 @@ public class Login {
         this.isLoggedin = false;
     }
     public void logInCheck(String username, String password, String userChoice) throws SQLException {
-       /* boolean flag1=false;
-        boolean flag2=false;
-        String userName="username";
-        String password2="password";*/
-            Connection con = DriverManager.getConnection(url,user,p);
-            Statement stmt=con.createStatement();
+        Connection con = DriverManager.getConnection(url,user,p);
+        Statement stmt=con.createStatement();
 
         String query = "";
         switch (userChoice) {
@@ -78,42 +74,6 @@ public class Login {
                 }
             }
         }
-
-           /* ResultSet result=stmt.executeQuery("select * from admin");
-            while (result.next()){
-                if(result.getString(userName).equals(username) && result.getString(password2).equals(password) && userChoice.equals("1"))
-                {
-                    login();
-                    flag1=true;
-                    break;
-                }
-            }
-
-            if(!flag1){
-                ResultSet resTenant=stmt.executeQuery("select * from tenant");
-                while (resTenant.next()){
-                    if(resTenant.getString(userName).equals(username) && resTenant.getString(password2).equals(password) && userChoice.equals("2"))
-                    {
-                        login();
-                        flag2=true;
-                        break;
-                    }
-                }
-            }
-
-            if(!flag1 && !flag2){
-                ResultSet resOwner=stmt.executeQuery("select * from owner");
-                while (resOwner.next()){
-                    if(resOwner.getString(userName).equals(username) && resOwner.getString(password2).equals(password) && userChoice.equals("3"))
-                    {
-                        ownerID=resOwner.getInt("idowner");
-                        ownerName=resOwner.getString("name");
-                        login();
-                        break;
-                    }
-                }
-            }
-*/
 
     }
 

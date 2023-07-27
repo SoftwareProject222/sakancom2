@@ -1,5 +1,6 @@
 package test.classes;
 
+import io.cucumber.java.sl.In;
 import model.classes.House;
 import code.classes.Login;
 import code.classes.OwnerControlPanel;
@@ -15,7 +16,7 @@ public class OwnerControlPanelT {
 
     Login obj;
     List<House> house;
-    ArrayList apart=new ArrayList<>();
+    List<Integer> apart=new ArrayList<>();
     List<HouseFloor> house_floor;
 
     public OwnerControlPanelT() {
