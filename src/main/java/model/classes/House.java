@@ -1,7 +1,6 @@
 package model.classes;
 import java.sql.*;
 import java.util.logging.Logger;
-
 public class House {
     private int id;
     private String link;

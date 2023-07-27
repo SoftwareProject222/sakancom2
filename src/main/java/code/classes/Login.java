@@ -79,9 +79,6 @@ public class Login {
             }
         }
 
-
-
-
            /* ResultSet result=stmt.executeQuery("select * from admin");
             while (result.next()){
                 if(result.getString(userName).equals(username) && result.getString(password2).equals(password) && userChoice.equals("1"))

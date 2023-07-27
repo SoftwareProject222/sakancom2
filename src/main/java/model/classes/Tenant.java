@@ -1,5 +1,4 @@
 package model.classes;
-
 public class Tenant {
     private int idTenant;
 

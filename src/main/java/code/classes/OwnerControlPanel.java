@@ -1,8 +1,6 @@
 package code.classes;
-
 import model.classes.House;
 import model.classes.HouseFloor;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

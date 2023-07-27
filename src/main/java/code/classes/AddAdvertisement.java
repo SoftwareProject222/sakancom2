@@ -14,8 +14,6 @@ public class AddAdvertisement {
     Double rent;
     Double price;
 
-
-
     static boolean validH=false;
     private static Logger logger = Logger.getLogger(AddAdvertisement.class.getName());
 

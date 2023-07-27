@@ -1,5 +1,4 @@
 package model.classes;
-
 import code.classes.AddAdvertisement;
 import code.classes.AdminPage;
 import code.classes.Login;
