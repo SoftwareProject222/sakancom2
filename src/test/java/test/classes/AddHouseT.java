@@ -49,8 +49,8 @@ public class AddHouseT {
         assertEquals(house.getLocation(),location);
         assertEquals(house.getServices(),services);
         assertEquals(house.getPrice(),price);
-        assertEquals(house.getOwner_id(),id_owner);
-        assertEquals(house.getNoof_floors(),no_floors);
+        assertEquals(house.getOwnerId(),id_owner);
+        assertEquals(house.getNoOfFloors(),no_floors);
 
         House.addHouse(house);
     }
@@ -70,11 +70,11 @@ public class AddHouseT {
     public void the_extra_information_about_the_house_will_be_saved_in_the_database() {
         assertNotNull(housef);
 
-        assertEquals(housef.getId_house(),id_house);
-        assertEquals(housef.getId_floor(),id_floor);
-        assertEquals(housef.getId_apart(),id_apart);
-        assertEquals(housef.getNo_bathrooms(),no_bathrooms);
-        assertEquals(housef.getNo_bedrooms(),no_bedrooms);
+        assertEquals(housef.getIdHouse(),id_house);
+        assertEquals(housef.getIdFloor(),id_floor);
+        assertEquals(housef.getIdApart(),id_apart);
+        assertEquals(housef.getNoBathrooms(),no_bathrooms);
+        assertEquals(housef.getNoBedrooms(),no_bedrooms);
         assertEquals(housef.getBalcony(),balcony);
 
         House.addHouseInfo(housef);

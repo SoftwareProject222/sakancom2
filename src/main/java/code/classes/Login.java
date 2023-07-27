@@ -6,12 +6,16 @@ import java.util.logging.Logger;
 public class Login {
 
     private static Logger logger = Logger.getLogger(Login.class.getName());
-    public boolean isLoggedin;
+    private boolean isLoggedin;
     private int ownerID;
     private String ownerName;
 
+    public void setLoggedin(boolean loggedin) {
+        isLoggedin = loggedin;
+    }
+
     public Login() {
-        this.isLoggedin = false;
+        setLoggedin(false);
     }
 
     public int getOwnerID() {
@@ -24,7 +28,7 @@ public class Login {
 
 
 
-    public boolean isLoggedIn() {
+    public boolean isLogIn() {
         return isLoggedin;
     }
 
@@ -35,14 +39,16 @@ public class Login {
     public void logout() {
         this.isLoggedin = false;
     }
-    public void logInCheck(String username, String password, String user_choice) throws SQLException {
-        boolean flag1=false, flag2=false;
-//        try {
+    public void logInCheck(String username, String password, String userChoice) throws SQLException {
+        boolean flag1=false;
+        boolean flag2=false;
+        String userName="username";
+        String password2="password";
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom","root","memesa32002@");
             Statement stmt=con.createStatement();
             ResultSet result=stmt.executeQuery("select * from admin");
             while (result.next()){
-                if(result.getString("username").equals(username) && result.getString("password").equals(password) && user_choice.equals("1"))
+                if(result.getString(userName).equals(username) && result.getString(password2).equals(password) && userChoice.equals("1"))
                 {
                     login();
                     flag1=true;
@@ -50,10 +56,10 @@ public class Login {
                 }
             }
 
-            if(flag1==false){
+            if(!flag1){
                 ResultSet resTenant=stmt.executeQuery("select * from tenant");
                 while (resTenant.next()){
-                    if(resTenant.getString("username").equals(username) && resTenant.getString("password").equals(password) && user_choice.equals("2"))
+                    if(resTenant.getString(userName).equals(username) && resTenant.getString(password2).equals(password) && userChoice.equals("2"))
                     {
                         login();
                         flag2=true;
@@ -62,10 +68,10 @@ public class Login {
                 }
             }
 
-            if(flag1==false && flag2==false){
+            if(!flag1 && !flag2){
                 ResultSet resOwner=stmt.executeQuery("select * from owner");
                 while (resOwner.next()){
-                    if(resOwner.getString("username").equals(username) && resOwner.getString("password").equals(password) && user_choice.equals("3"))
+                    if(resOwner.getString(userName).equals(username) && resOwner.getString(password2).equals(password) && userChoice.equals("3"))
                     {
                         ownerID=resOwner.getInt("idowner");
                         ownerName=resOwner.getString("name");
@@ -74,11 +80,7 @@ public class Login {
                     }
                 }
             }
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
+
 
     }
 

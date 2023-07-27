@@ -6,46 +6,45 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class HouseFloor {
-    private int id_house;
-    private int id_floor;
-    private int id_apart;
-    private int no_bathrooms;
-    private int no_bedrooms;
+    private int houseId;
+    private int floorId;
+    private int apartId;
+    private int noBathrooms;
+    private int noBedrooms;
     private String balcony;
 
-//    public HouseFloor() {
-//    }
 
-    public int getId_house() {
-        return id_house;
+
+    public int getIdHouse() {
+        return houseId;
     }
 
-    public int getId_floor() {
-        return id_floor;
+    public int getIdFloor() {
+        return floorId;
     }
 
-    public int getId_apart() {
-        return id_apart;
+    public int getIdApart() {
+        return apartId;
     }
 
-    public int getNo_bathrooms() {
-        return no_bathrooms;
+    public int getNoBathrooms() {
+        return noBathrooms;
     }
 
-    public int getNo_bedrooms() {
-        return no_bedrooms;
+    public int getNoBedrooms() {
+        return noBedrooms;
     }
 
     public String getBalcony() {
         return balcony;
     }
 
-    public HouseFloor(int id_house, int id_floor, int id_apart, int no_bathrooms, int no_bedrooms, String balcony) {
-        this.id_house = id_house;
-        this.id_floor = id_floor;
-        this.id_apart = id_apart;
-        this.no_bathrooms = no_bathrooms;
-        this.no_bedrooms = no_bedrooms;
+    public HouseFloor(int idHouse, int idFloor, int idApart, int noBathrooms, int noBedrooms, String balcony) {
+        this.houseId = idHouse;
+        this.floorId = idFloor;
+        this.apartId = idApart;
+        this.noBathrooms = noBathrooms;
+        this.noBedrooms = noBedrooms;
         this.balcony = balcony;
     }
     public static boolean findHouseFloorId(int idhouse){
@@ -61,7 +60,6 @@ public class HouseFloor {
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
         }
         return ret;
     }

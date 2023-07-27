@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class AddAdvertisementT {
     Login obj;
-    AddAdvertisement adv;
+    AddAdvertisement adv,adv2;
     Integer id_house;
     String photos,  ownerName,  ownerContactInfo,  location,  services, rentNote;
     Double rent,price;
@@ -46,7 +46,7 @@ public class AddAdvertisementT {
     public void the_advertisement_will_be_saved_in_the_database() {
         assertNotNull(adv);
 
-        assertEquals(adv.getId_house(),id_house);
+        assertEquals(adv.getHouseId(),id_house);
         assertEquals(adv.getPhotos(),photos);
         assertEquals(adv.getOwnerName(),ownerName);
         assertEquals(adv.getOwnerContactInfo(),ownerContactInfo);

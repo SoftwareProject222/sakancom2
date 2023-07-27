@@ -33,19 +33,19 @@ public class Main {
             e.printStackTrace();
         }
     }
-        public static void displayAllHouses(){
-            try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
-                Statement stmt = con.createStatement();
-                ResultSet result = stmt.executeQuery("select * from house");
-                logger.info("All houses in the system: ");
-                logger.info("idHouse\t location\t\t services\t\t price\t\t idOwner");
-                while (result.next()) {
-                    logger.info(result.getInt("idhouse")+"\t"+result.getString("location")+"\t"+result.getString("services")+"\t"+ result.getDouble("price")+" JD\t"+ result.getInt("id_owner"));
-                }
-            }catch (Exception e){
-                e.printStackTrace();
+    public static void displayAllHouses(){
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
+            Statement stmt = con.createStatement();
+            ResultSet result = stmt.executeQuery("select * from house");
+            logger.info("All houses in the system: ");
+            logger.info("idHouse\t location\t\t services\t\t price\t\t idOwner");
+            while (result.next()) {
+                logger.info(result.getInt("idhouse")+"\t"+result.getString("location")+"\t"+result.getString("services")+"\t"+ result.getDouble("price")+" JD\t"+ result.getInt("id_owner"));
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public static void main(String[] args) throws URISyntaxException, IOException, SQLException {
 
@@ -76,7 +76,7 @@ public class Main {
                 logger.info("Enter password: ");
                 String password= scan.nextLine();
                 log.logInCheck(username,password,choice);
-                if(!log.isLoggedIn()){
+                if(!log.isLogIn()){
                     log.reasonFalseLogin();
                     continue;
                 }
@@ -154,7 +154,7 @@ public class Main {
                                     updateHouse.updateMsg();
                                 }
                                 else if(updateOption.equals("4")){
-                                   break;
+                                    break;
                                 }
                                 else logger.warning(IN_VALID_INPUT);
                             }
@@ -262,7 +262,7 @@ public class Main {
                                         logger.info("Is there's a balcony? yes/no: ");
                                         String balcony=scan.nextLine();
                                         newHouseFloor=new HouseFloor(Integer.parseInt(houseID),Integer.parseInt(idfloor),Integer.parseInt(idapart),Integer.parseInt(no_bathrooms),Integer.parseInt(no_bedrooms),balcony);
-                                        logger.info(newHouseFloor.getId_house()+"");
+                                        logger.info(newHouseFloor.getIdHouse()+"");
                                         House.addHouseInfo(newHouseFloor);
                                         /////////
                                         logger.info("1- continue adding details\n2- add another new house\n3- back to my page");

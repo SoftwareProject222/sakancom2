@@ -3,39 +3,29 @@ package model.classes;
 import java.util.Date;
 
 public class Tenant {
-    private int idtenant;
-//    private String username;
-//    private String password;
+    private int idTenant;
+
     private String name;
     private int phone;
     private String email;
-    private int id_apart;
-//    private Date time_to_pay;
-    private int id_house;
+    private int idApart;
 
-//    public Tenant() {
-//    }
+    private int idHouse;
 
-    public Tenant(int id_house, int id_apart,int idtenant, String name, int phone, String email ) {
-        this.idtenant = idtenant;
+
+
+    public Tenant(int idHouse, int idApart,int idTenant, String name, int phone, String email ) {
+        this.idTenant = idTenant;
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.id_apart = id_apart;
-        this.id_house = id_house;
+        this.idApart = idApart;
+        this.idHouse = idHouse;
     }
 
-    public int getIdtenant() {
-        return idtenant;
+    public int getIdTenant() {
+        return idTenant;
     }
-
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
 
     public String getName() {
         return name;
@@ -49,15 +39,12 @@ public class Tenant {
         return email;
     }
 
-    public int getId_apart() {
-        return id_apart;
+    public int getIdApart() {
+        return idApart;
     }
 
-//    public Date getTime_to_pay() {
-//        return time_to_pay;
-//    }
 
-    public int getId_house() {
-        return id_house;
+    public int getIdHouse() {
+        return idHouse;
     }
 }

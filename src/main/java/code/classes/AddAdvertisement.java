@@ -4,16 +4,65 @@ import java.sql.*;
 import java.util.logging.Logger;
 
 public class AddAdvertisement {
-    Integer id_house;
-    String photos,  ownerName,  ownerContactInfo,  location,  services, rentNote;
-    Double rent,price;
+    Integer houseId;
+    String photos;
+    String ownerName;
+    String ownerContactInfo;
+    String location;
+    String services;
+    String rentNote;
+    Double rent;
+    Double price;
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
+    }
+
+    public void setPhotos(String photos) {
+        this.photos = photos;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public void setOwnerContactInfo(String ownerContactInfo) {
+        this.ownerContactInfo = ownerContactInfo;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setServices(String services) {
+        this.services = services;
+    }
+
+    public void setRentNote(String rentNote) {
+        this.rentNote = rentNote;
+    }
+
+    public void setRent(Double rent) {
+        this.rent = rent;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public static void setValidH(boolean validH) {
+        AddAdvertisement.validH = validH;
+    }
+
+    public AddAdvertisement() {
+    }
 
     static boolean validH=false;
-    private static Logger logger = Logger.getLogger(Login.class.getName());
+    private static Logger logger = Logger.getLogger(AddAdvertisement.class.getName());
 
 
     public AddAdvertisement(Integer id_house, String photos, String ownerName, String ownerContactInfo, String location, String services, Double rent,String rentNote,  Double price) {
-        this.id_house = id_house;
+        this.houseId = id_house;
         this.photos = photos;
         this.ownerName = ownerName;
         this.ownerContactInfo = ownerContactInfo;
@@ -26,8 +75,8 @@ public class AddAdvertisement {
 
 
 
-    public Integer getId_house() {
-        return id_house;
+    public Integer getHouseId() {
+        return houseId;
     }
 
     public String getPhotos() {
@@ -73,14 +122,15 @@ public class AddAdvertisement {
 
 
     public static void addAdv(AddAdvertisement adv) {
-        boolean flag=true, flag2=false;
+        boolean flag=true;
+        boolean flag2=false;
         Connection con1=null;
         try {
             con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
             Statement stmt1 = con1.createStatement();
             ResultSet result1 = stmt1.executeQuery("select idhouse_adv from owner_advertisements");
             while (result1.next()) {
-                if(adv.getId_house()==result1.getInt("idhouse_adv")){
+                if(adv.getHouseId()==result1.getInt("idhouse_adv")){
                     flag=false;
                     validH=false;
                     isDuplicateHouse=true;
@@ -90,7 +140,7 @@ public class AddAdvertisement {
             if(flag){
                 ResultSet result2 = stmt1.executeQuery("select idhouse from house");
                 while (result2.next()) {
-                    if(adv.getId_house()==result2.getInt("idhouse")){
+                    if(adv.getHouseId()==result2.getInt("idhouse")){
                         flag2=true;
                         isDuplicateHouse=false;
                         break;
@@ -99,12 +149,10 @@ public class AddAdvertisement {
             }
 
             if(flag && flag2){
-                String insertStmt = "insert into owner_advertisements values('" + adv.getId_house() + "','" + adv.getPhotos() + "','" + adv.getOwnerName() + "','" + adv.getOwnerContactInfo() +
+                String insertStmt = "insert into owner_advertisements values('" + adv.getHouseId() + "','" + adv.getPhotos() + "','" + adv.getOwnerName() + "','" + adv.getOwnerContactInfo() +
                         "',  '" + adv.getLocation() +"','" + adv.getServices()+"'," + adv.getRent() + ",'" + adv.getRentNote() + "' ,'" + adv.getPrice() + "','no','')";
                 stmt1.executeUpdate(insertStmt);
                 validH=true;
-
-//                validHouse();
             }
 
             con1.close();

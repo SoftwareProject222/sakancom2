@@ -19,7 +19,7 @@ public class LoginT {
 
     @Given("that the user is not logged in")
     public void that_the_user_is_not_logged_in() {
-        assertFalse(obj.isLoggedIn());
+        assertFalse(obj.isLogIn());
     }
     @Given("the username is {string}")
     public void the_username_is(String username) {
@@ -36,12 +36,12 @@ public class LoginT {
     @Then("the user login succeeds")
     public void the_user_login_succeeds() throws SQLException {
         obj.logInCheck(this.username,this.password,this.user_choice);
-        assertTrue(obj.isLoggedIn());
+        assertTrue(obj.isLogIn());
     }
     @Then("the user will not login")
     public void the_user_will_not_login() throws SQLException {
         obj.logInCheck(this.username,this.password,this.user_choice);
-        assertFalse(obj.isLoggedIn());
+        assertFalse(obj.isLogIn());
     }
     @Then("show the reason why he can't logged in")
     public void show_the_reason_why_he_can_t_logged_in() {

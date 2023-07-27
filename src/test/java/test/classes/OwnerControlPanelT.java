@@ -40,12 +40,12 @@ public class OwnerControlPanelT {
 
     @Given("that the owner logged in")
     public void that_the_owner_logged_in() {
-        obj.isLoggedin=true;
+        obj.setLoggedin(true);
     }
 
     @Given("the owner enter the floor ID ={int}")
     public void the_owner_enter_the_floor_id(Integer floor_idd) throws SQLException {
-        apart=OwnerControlPanel.findFloor(floor_idd);
+        apart= OwnerControlPanel.findFloor(floor_idd);
     }
 
     @Then("the apartments of this floor printed")
