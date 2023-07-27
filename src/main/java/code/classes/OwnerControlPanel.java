@@ -15,12 +15,12 @@ public class OwnerControlPanel {
 
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
-    static String password="memesa32002@";
+    static String p="memesa32002@";
 
     public static List<House> findHouse(int houseId) throws SQLException {
-        House house2=new House();
+        /*House house2=new House();*/
         List<House> houseList = new ArrayList<>();
-        Connection con = DriverManager.getConnection(url,user,password);
+        Connection con = DriverManager.getConnection(url,user,p);
         Statement stmt = con.createStatement();
         ResultSet result = stmt.executeQuery("select * from house where idhouse='" + houseId + "'");
 
@@ -36,12 +36,12 @@ public class OwnerControlPanel {
 
             logger.info("number of tenant= " + h.getNoOfTenant() + "\n" + "number of floors= " + h.getNoOfFloors() + "\n");
             logger.info("floors of this house:\n");
-            Connection con = DriverManager.getConnection(url,user,password);
+            Connection con = DriverManager.getConnection(url,user,p);
             Statement stmt = con.createStatement();
             ResultSet result = stmt.executeQuery("select DISTINCT id_floor from house_floor where id_house='" + h.getId() + "'");
             while (result.next()) {
-                int floorId=result.getInt("id_floor");
-                logger.info(floorId+"\n");
+                String output =result.getInt("id_floor")+"\n";
+                logger.info(output);
             }
 
     }
@@ -54,7 +54,7 @@ public class OwnerControlPanel {
 
     public static ArrayList findFloor(int floorId) throws SQLException {
         ArrayList apart = new ArrayList<>();
-        Connection con = DriverManager.getConnection(url,user,password);
+        Connection con = DriverManager.getConnection(url,user,p);
         Statement stmt = con.createStatement();
         ResultSet result = stmt.executeQuery("select id_apart from house_floor where  id_house='" + houseObj.getId()+"' and  id_floor='" + floorId + "' ");
         while (result.next()) {
@@ -66,14 +66,15 @@ public class OwnerControlPanel {
     public static void displayAparts(ArrayList apart) {
         logger.info("apartments of this floor: \n");
         for (int i=0;i<apart.size();i++){
-            logger.info(apart.get(i)+"\n");
+            String output=apart.get(i)+"\n";
+            logger.info(output);
         }
 
     }
 
     public static List<HouseFloor> findApart(int apartmentId) throws SQLException {
         List<HouseFloor> apartInfoList = new ArrayList<>();
-        Connection con = DriverManager.getConnection(url,user,password);
+        Connection con = DriverManager.getConnection(url,user,p);
         Statement stmt = con.createStatement();
         ResultSet result = stmt.executeQuery("select * from house_floor where id_house='" + houseObj.getId() + "' and id_apart='"+apartmentId+"'");
         while (result.next()) {
@@ -89,12 +90,13 @@ public class OwnerControlPanel {
 
         logger.info("number of bathrooms= " + hf.getNoBathrooms() + "\n" + "number of bedrooms= " + hf.getNoBedrooms() + "\n there's a balcony: "+hf.getBalcony()+"\n");
         logger.info("Tenants of this apartment:\n TenantName \t contactInfo\n");
-        Connection con = DriverManager.getConnection(url,user,password);
+        Connection con = DriverManager.getConnection(url,user,p);
         Statement stmt = con.createStatement();
         ResultSet result = stmt.executeQuery("select name, phone, email from tenant where id_apart='"+hf.getIdApart()+"'");
 
         while (result.next()) {
-            logger.info( result.getString("name") + "\t 0"+ result.getString("phone")+" , "+result.getString("email")+"\n");
+            String output=result.getString("name") + "\t 0"+ result.getString("phone")+" , "+result.getString("email")+"\n";
+            logger.info(output);
 
         }
 

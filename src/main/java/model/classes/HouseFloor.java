@@ -13,7 +13,9 @@ public class HouseFloor {
     private int noBedrooms;
     private String balcony;
 
-
+    static String url="jdbc:mysql://localhost:3306/sakancom";
+    static String user="root";
+    static String p="memesa32002@";
 
     public int getIdHouse() {
         return houseId;
@@ -50,7 +52,7 @@ public class HouseFloor {
     public static boolean findHouseFloorId(int idhouse){
         boolean ret=false;
         try {
-            Connection con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
+            Connection con1 = DriverManager.getConnection(url,user,p);
             Statement stmt1 = con1.createStatement();
             ResultSet result1 = stmt1.executeQuery("select id_house from house_floor");
             while (result1.next()) {
@@ -60,6 +62,7 @@ public class HouseFloor {
                 }
             }
         }catch (Exception e){
+            e.printStackTrace();
         }
         return ret;
     }

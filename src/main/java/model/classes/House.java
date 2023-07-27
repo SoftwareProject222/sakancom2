@@ -1,7 +1,4 @@
 package model.classes;
-
-import code.classes.Login;
-
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -17,44 +14,14 @@ public class House {
 
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
-    static String password="memesa32002@";
+    static String p="memesa32002@";
 
     private static Logger logger = Logger.getLogger(House.class.getName());
 
     public House() {
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setServices(String services) {
-        this.services = services;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public void setNoOfFloors(int noOfFloors) {
-        this.noOfFloors = noOfFloors;
-    }
-
-    public void setNoOfTenant(int noOfTenant) {
-        this.noOfTenant = noOfTenant;
-    }
 
     public House(int id, String link, String location, String services, Double price, int ownerId, int noOfFloors) {
         this.id = id;
@@ -65,15 +32,15 @@ public class House {
         this.ownerId = ownerId;
         this.noOfFloors = noOfFloors;
     }
-    public House(int id, String link, String location, String services, Double price, int owner_id, int noof_floors, int noof_tenant) {
+    public House(int id, String link, String location, String services, Double price, int ownerId, int noOfFloors, int noOfTenant) {
         this.id = id;
         this.link = link;
         this.location = location;
         this.services = services;
         this.price = price;
-        this.ownerId = owner_id;
-        this.noOfFloors = noof_floors;
-        this.noOfTenant = noof_tenant;
+        this.ownerId = ownerId;
+        this.noOfFloors = noOfFloors;
+        this.noOfTenant = noOfTenant;
     }
 
 
@@ -117,7 +84,7 @@ public class House {
     public static boolean findHouseId(int idhouse) throws SQLException {
         boolean ret=false;
 
-            Connection con1 = DriverManager.getConnection(url,user,password);
+            Connection con1 = DriverManager.getConnection(url,user,p);
             Statement stmt1 = con1.createStatement();
             ResultSet result1 = stmt1.executeQuery("select idhouse from house");
             while (result1.next()) {
@@ -132,7 +99,7 @@ public class House {
 
     public static void addHouse(House house) throws SQLException {
 
-            Connection con = DriverManager.getConnection(url,user,password);
+            Connection con = DriverManager.getConnection(url,user,p);
             Statement stmt = con.createStatement();
             String insertHouse="INSERT INTO house VALUES('"+house.getId()+"','"+house.getLink()+"','"+house.getLocation()+"','"+house.getServices()+"','"+house.getPrice()+"','"+house.getOwnerId()+"','"+house.getNoOfFloors()+"',0)";
             if(!House.findHouseId(house.getId())){
@@ -147,7 +114,7 @@ public class House {
     }
     public static void addHouseInfo(HouseFloor housef) {
         try {
-            Connection con = DriverManager.getConnection(url,user,password);
+            Connection con = DriverManager.getConnection(url,user,p);
             Statement stmt = con.createStatement();
             String insertHouseInfo="INSERT INTO house_floor VALUES('"+housef.getIdHouse()+"','"+housef.getIdFloor()+"','"+housef.getIdApart()+"','"+housef.getNoBathrooms()+"','"+housef.getNoBedrooms()+"','"+housef.getBalcony()+"')";
             stmt.executeUpdate(insertHouseInfo);
@@ -158,8 +125,7 @@ public class House {
     }
 
     public void updateInfo(String attribute, Object value, Integer houseId) throws SQLException {
-//        try {
-        Connection con = DriverManager.getConnection(url,user,password);
+        Connection con = DriverManager.getConnection(url,user,p);
         Statement stmt = con.createStatement();
 
         if(House.findHouseId(houseId)){

@@ -14,55 +14,14 @@ public class AddAdvertisement {
     Double rent;
     Double price;
 
-    public void setHouseId(Integer houseId) {
-        this.houseId = houseId;
-    }
 
-    public void setPhotos(String photos) {
-        this.photos = photos;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-
-    public void setOwnerContactInfo(String ownerContactInfo) {
-        this.ownerContactInfo = ownerContactInfo;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setServices(String services) {
-        this.services = services;
-    }
-
-    public void setRentNote(String rentNote) {
-        this.rentNote = rentNote;
-    }
-
-    public void setRent(Double rent) {
-        this.rent = rent;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public static void setValidH(boolean validH) {
-        AddAdvertisement.validH = validH;
-    }
-
-    public AddAdvertisement() {
-    }
 
     static boolean validH=false;
     private static Logger logger = Logger.getLogger(AddAdvertisement.class.getName());
 
 
-    public AddAdvertisement(Integer id_house, String photos, String ownerName, String ownerContactInfo, String location, String services, Double rent,String rentNote,  Double price) {
-        this.houseId = id_house;
+    public AddAdvertisement(Integer idHouse, String photos, String ownerName, String ownerContactInfo, String location, String services, Double rent,String rentNote,  Double price) {
+        this.houseId = idHouse;
         this.photos = photos;
         this.ownerName = ownerName;
         this.ownerContactInfo = ownerContactInfo;
@@ -110,10 +69,15 @@ public class AddAdvertisement {
     public Double getPrice() {
         return price;
     }
+    static String url="jdbc:mysql://localhost:3306/sakancom";
+    static String user="root";
+    static String p="memesa32002@";
 
+    private static boolean isDuplicateHouse=false;
 
-    public static boolean isDuplicateHouse=false;
-
+    public static boolean getIsDuplicateHouse() {
+        return isDuplicateHouse;
+    }
 
     public static boolean isValidHouse() {
         return validH;
@@ -124,9 +88,9 @@ public class AddAdvertisement {
     public static void addAdv(AddAdvertisement adv) {
         boolean flag=true;
         boolean flag2=false;
-        Connection con1=null;
+        Connection con1;
         try {
-            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
+            con1 = DriverManager.getConnection(url,user,p);
             Statement stmt1 = con1.createStatement();
             ResultSet result1 = stmt1.executeQuery("select idhouse_adv from owner_advertisements");
             while (result1.next()) {
@@ -159,16 +123,8 @@ public class AddAdvertisement {
 
 
         }catch (SQLException e){
+            e.printStackTrace();
         }
-        finally {
-            if (con1 != null) {
-                try {
-                    con1.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-
     }
 
     public void displayReasonSameHouse() {

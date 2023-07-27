@@ -7,7 +7,6 @@ import code.classes.OwnerControlPanel;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
-import java.io.Console;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,10 +18,12 @@ import java.util.logging.Logger;
 public class Main {
     private static  Logger logger = Logger.getLogger(Main.class.getName());
     private static final String IN_VALID_INPUT = "Please enter valid input";
-
+    static String url="jdbc:mysql://localhost:3306/sakancom";
+    static String user="root";
+    static String p="memesa32002@";
     public static void displayHouses(int ownerID) {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
+            Connection con = DriverManager.getConnection(url,user,p);
             Statement stmt = con.createStatement();
             ResultSet result = stmt.executeQuery("select * from house where id_owner='" + ownerID + "'");
             logger.info("idHouse\t location\t\t services\t\t price");
@@ -35,7 +36,7 @@ public class Main {
     }
     public static void displayAllHouses(){
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
+            Connection con = DriverManager.getConnection(url,user,p);
             Statement stmt = con.createStatement();
             ResultSet result = stmt.executeQuery("select * from house");
             logger.info("All houses in the system: ");
@@ -205,7 +206,7 @@ public class Main {
                             AddAdvertisement.addAdv(advertisement);
                             logger.info("The advertisement is added, but waiting Administrator to accept it ");
                             if(!AddAdvertisement.isValidHouse()){
-                                if(AddAdvertisement.isDuplicateHouse){
+                                if(AddAdvertisement.getIsDuplicateHouse()){
                                     advertisement.displayReasonSameHouse();
                                 }
                                 else advertisement.displayReasonHouseNotExist();;

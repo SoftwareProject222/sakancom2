@@ -1,5 +1,4 @@
 package code.classes;
-import io.cucumber.java.sl.In;
 import model.classes.Tenant;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +14,7 @@ public class AdminPage {
     static Tenant tenant;
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
-    static String password="memesa32002@";
+    static String p="memesa32002@";
 
     private static Logger logger = Logger.getLogger(AdminPage.class.getName());
 
@@ -23,13 +22,13 @@ public class AdminPage {
         return idhouse;
     }
 
-//    public void setIdhouse(int idhouse) {
-//        this.idhouse = idhouse;
-//    }
+/*   public void setIdhouse(int idhouse) {
+/       this.idhouse = idhouse;
+/   }
 
-//    public void setAcceptance(String acceptance) {
-//        this.acceptance = acceptance;
-//    }
+/   public void setAcceptance(String acceptance) {
+/       this.acceptance = acceptance;
+   }*/
 
     public String getAcceptance() {
         return acceptance;
@@ -42,13 +41,14 @@ public class AdminPage {
 
     public static void acceptReject(AdminPage ad) {
         try {
-            Connection con = DriverManager.getConnection(url,user,password);
+            Connection con = DriverManager.getConnection(url,user,p);
             Statement stmt = con.createStatement();
             String updateAccep="UPDATE owner_advertisements SET accept= '"+ad.getAcceptance()+"' WHERE idhouse_adv='"+ad.getIdhouse()+"' ";
             stmt.executeUpdate(updateAccep);
             con.close();
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -56,7 +56,7 @@ public class AdminPage {
     public static List<Tenant> seeReservations() {
         List<Tenant> tenantList = new ArrayList<>();
         try {
-            Connection con = DriverManager.getConnection(url,user,password);
+            Connection con = DriverManager.getConnection(url,user,p);
             Statement stmt = con.createStatement();
             ResultSet result = stmt.executeQuery("select id_house,id_apart,idtenant,name,phone,email from tenant");
             while (result.next()) {
@@ -65,6 +65,7 @@ public class AdminPage {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return tenantList;
 
@@ -83,15 +84,17 @@ public class AdminPage {
             displayReservation(t);
         }
         try {
-            Connection con = DriverManager.getConnection(url,user,password);
+            Connection con = DriverManager.getConnection(url,user,p);
             Statement stmt = con.createStatement();
             ResultSet result = stmt.executeQuery("select idhouse from house where no_tenant=0");
-            int houseId=result.getInt("idhouse");
             while (result.next()) {
-                logger.info(houseId+tab+tab+tab+tab2);
+                int houseId=result.getInt("idhouse");
+                String output=houseId+tab+tab+tab+tab2;
+                logger.info(output);
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
