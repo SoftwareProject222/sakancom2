@@ -1,9 +1,6 @@
 package code.classes;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.logging.Logger;
 
 public class AddAdvertisement {
@@ -77,8 +74,9 @@ public class AddAdvertisement {
 
     public static void addAdv(AddAdvertisement adv) {
         boolean flag=true, flag2=false;
+        Connection con1=null;
         try {
-            Connection con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakancom", "root", "memesa32002@");
             Statement stmt1 = con1.createStatement();
             ResultSet result1 = stmt1.executeQuery("select idhouse_adv from owner_advertisements");
             while (result1.next()) {
@@ -112,7 +110,15 @@ public class AddAdvertisement {
             con1.close();
 
 
-        }catch (Exception e){
+        }catch (SQLException e){
+        }
+        finally {
+            if (con1 != null) {
+                try {
+                    con1.close();
+                } catch (SQLException e) {
+                }
+            }
         }
 
     }
