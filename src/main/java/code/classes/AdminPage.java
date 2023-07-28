@@ -65,13 +65,12 @@ public class AdminPage {
         {
             displayReservation(t);
         }
-
+        String tab="\t\tـــ\t\t";
         Connection con = DriverManager.getConnection(url,user,p);
         Statement stmt = con.createStatement();
         ResultSet result = stmt.executeQuery("select idhouse from house where no_tenant=0");
         while (result.next()) {
-            int houseId=result.getInt("idhouse");
-            String output=result.getInt("idhouse")+"\t\tـــ\t\t"+"\t\tـــ\t\t"+"\t\tـــ\t\t"+"\tـــ";
+            String output=result.getInt("idhouse")+tab+tab+tab+"\tـــ";
             logger.info(output);
         }
 
