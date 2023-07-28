@@ -14,14 +14,9 @@ public class House {
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
     static String p="memesa32002@";
-
     private static Logger logger = Logger.getLogger(House.class.getName());
-
     public House() {
     }
-
-
-
     public House(int id, String link, String location, String services, Double price, int ownerId, int noOfFloors) {
         this.id = id;
         this.link = link;
@@ -31,18 +26,10 @@ public class House {
         this.ownerId = ownerId;
         this.noOfFloors = noOfFloors;
     }
-    public House(int id, String link, String location, String services, Double price, int ownerId, int noOfFloors, int noOfTenant) {
-        this.id = id;
-        this.link = link;
-        this.location = location;
-        this.services = services;
-        this.price = price;
-        this.ownerId = ownerId;
-        this.noOfFloors = noOfFloors;
+
+    public void setNoOfTenant(int noOfTenant) {
         this.noOfTenant = noOfTenant;
     }
-
-
 
     public int getId() {
         return id;
@@ -82,17 +69,15 @@ public class House {
 
     public static boolean findHouseId(int idhouse) throws SQLException {
         boolean ret=false;
-
-            Connection con1 = DriverManager.getConnection(url,user,p);
-            Statement stmt1 = con1.createStatement();
-            ResultSet result1 = stmt1.executeQuery("select idhouse from house");
-            while (result1.next()) {
-                if(idhouse==result1.getInt("idhouse")){
-                    ret= true;
-                    break;
-                }
+        Connection con1 = DriverManager.getConnection(url,user,p);
+        Statement stmt1 = con1.createStatement();
+        ResultSet result1 = stmt1.executeQuery("select idhouse from house");
+        while (result1.next()) {
+            if(idhouse==result1.getInt("idhouse")){
+                ret= true;
+                break;
             }
-
+        }
         return ret;
     }
 
@@ -109,19 +94,15 @@ public class House {
             }
 
             con.close();
-
     }
-    public static void addHouseInfo(HouseFloor housef) {
-        try {
-            Connection con = DriverManager.getConnection(url,user,p);
-            Statement stmt = con.createStatement();
-            String insertHouseInfo="INSERT INTO house_floor VALUES('"+housef.getIdHouse()+"','"+housef.getIdFloor()+"','"+housef.getIdApart()+"','"+housef.getNoBathrooms()+"','"+housef.getNoBedrooms()+"','"+housef.getBalcony()+"')";
-            stmt.executeUpdate(insertHouseInfo);
-            logger.info("House's Information added successfully");
+    public static void addHouseInfo(HouseFloor housef) throws SQLException {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Connection con = DriverManager.getConnection(url,user,p);
+        Statement stmt = con.createStatement();
+        String insertHouseInfo="INSERT INTO house_floor VALUES('"+housef.getIdHouse()+"','"+housef.getIdFloor()+"','"+housef.getIdApart()+"','"+housef.getNoBathrooms()+"','"+housef.getNoBedrooms()+"','"+housef.getBalcony()+"')";
+        stmt.executeUpdate(insertHouseInfo);
+        logger.info("House's Information added successfully");
+
     }
 
     public void updateInfo(String attribute, Object value, Integer houseId) throws SQLException {
@@ -143,7 +124,6 @@ public class House {
             }
         }
             con.close();
-
     }
     public void updateMsg() {
         logger.info(" Information Updated Successfully");

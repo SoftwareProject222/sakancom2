@@ -1,8 +1,5 @@
 package model.classes;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class HouseFloor {
     private int houseId;
@@ -12,9 +9,9 @@ public class HouseFloor {
     private int noBedrooms;
     private String balcony;
 
-    static String url="jdbc:mysql://localhost:3306/sakancom";
-    static String user="root";
-    static String p="memesa32002@";
+    static String url = "jdbc:mysql://localhost:3306/sakancom";
+    static String user = "root";
+    static String p = "memesa32002@";
 
     public int getIdHouse() {
         return houseId;
@@ -48,21 +45,21 @@ public class HouseFloor {
         this.noBedrooms = noBedrooms;
         this.balcony = balcony;
     }
-    public static boolean findHouseFloorId(int idhouse){
-        boolean ret=false;
-        try {
-            Connection con1 = DriverManager.getConnection(url,user,p);
-            Statement stmt1 = con1.createStatement();
-            ResultSet result1 = stmt1.executeQuery("select id_house from house_floor");
-            while (result1.next()) {
-                if(idhouse==result1.getInt("id_house")){
-                    ret= true;
-                    break;
-                }
+
+    public static boolean findHouseFloorId(int idhouse) throws SQLException {
+        boolean ret = false;
+
+        Connection con1 = DriverManager.getConnection(url, user, p);
+        Statement stmt1 = con1.createStatement();
+        ResultSet result1 = stmt1.executeQuery("select id_house from house_floor");
+        while (result1.next()) {
+            if (idhouse == result1.getInt("id_house")) {
+                ret = true;
+                break;
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
+
         return ret;
+
     }
 }

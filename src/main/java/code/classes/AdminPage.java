@@ -1,9 +1,7 @@
 package code.classes;
 import model.classes.Tenant;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,34 +29,28 @@ public class AdminPage {
         this.acceptance = acceptance;
     }
 
-    public static void acceptReject(AdminPage ad) {
-        try {
-            Connection con = DriverManager.getConnection(url,user,p);
-            Statement stmt = con.createStatement();
-            String updateAccep="UPDATE owner_advertisements SET accept= '"+ad.getAcceptance()+"' WHERE idhouse_adv='"+ad.getIdhouse()+"' ";
-            stmt.executeUpdate(updateAccep);
-            con.close();
+    public static void acceptReject(AdminPage ad) throws SQLException {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Connection con = DriverManager.getConnection(url,user,p);
+        Statement stmt = con.createStatement();
+        String updateAccep="UPDATE owner_advertisements SET accept= '"+ad.getAcceptance()+"' WHERE idhouse_adv='"+ad.getIdhouse()+"' ";
+        stmt.executeUpdate(updateAccep);
+        con.close();
+
     }
 
 
-    public static List<Tenant> seeReservations() {
+    public static List<Tenant> seeReservations() throws SQLException {
         List<Tenant> tenantList = new ArrayList<>();
-        try {
-            Connection con = DriverManager.getConnection(url,user,p);
-            Statement stmt = con.createStatement();
-            ResultSet result = stmt.executeQuery("select id_house,id_apart,idtenant,name,phone,email from tenant");
-            while (result.next()) {
-                tenant=new Tenant(result.getInt("id_house"),result.getInt("id_apart"),result.getInt("idtenant"), result.getString("name"),result.getInt("phone"),result.getString("email"));
-                tenantList.add(tenant);
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        Connection con = DriverManager.getConnection(url,user,p);
+        Statement stmt = con.createStatement();
+        ResultSet result = stmt.executeQuery("select id_house,id_apart,idtenant,name,phone,email from tenant");
+        while (result.next()) {
+            tenant=new Tenant(result.getInt("id_house"),result.getInt("id_apart"),result.getInt("idtenant"), result.getString("name"),result.getInt("phone"),result.getString("email"));
+            tenantList.add(tenant);
         }
+
         return tenantList;
 
     }
@@ -67,26 +59,20 @@ public class AdminPage {
         logger.info(t.getIdHouse()+"\t\t\t"+t.getIdApart()+"\t\t"+t.getIdTenant()+"\t"+t.getName()+"\t\t 0"+t.getPhone()+","+t.getEmail()+"\n");
     }
 
-    public static void displayReservations(List<Tenant> tenant) {
-        String tab="\t\tـــ\t\t";
-        String tab2="\tـــ";
+    public static void displayReservations(List<Tenant> tenant) throws SQLException {
         logger.info("House id\t Apart id\t Tenant id\t Tenant name\t contact Info of tenant (Phone & Email)\n ");
         for(Tenant t:tenant)
         {
             displayReservation(t);
         }
-        try {
-            Connection con = DriverManager.getConnection(url,user,p);
-            Statement stmt = con.createStatement();
-            ResultSet result = stmt.executeQuery("select idhouse from house where no_tenant=0");
-            while (result.next()) {
-                int houseId=result.getInt("idhouse");
-                String output=houseId+tab+tab+tab+tab2;
-                logger.info(output);
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        Connection con = DriverManager.getConnection(url,user,p);
+        Statement stmt = con.createStatement();
+        ResultSet result = stmt.executeQuery("select idhouse from house where no_tenant=0");
+        while (result.next()) {
+            int houseId=result.getInt("idhouse");
+            String output=result.getInt("idhouse")+"\t\tـــ\t\t"+"\t\tـــ\t\t"+"\t\tـــ\t\t"+"\tـــ";
+            logger.info(output);
         }
 
     }

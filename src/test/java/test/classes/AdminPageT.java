@@ -7,6 +7,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import model.classes.Tenant;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -33,17 +34,17 @@ public class AdminPageT {
     }
 
     @Then("he can accept or reject it")
-    public void he_can_accept_or_reject_it() {
+    public void he_can_accept_or_reject_it() throws SQLException {
         assertEquals(ad.getAcceptance(),acceptance);
         AdminPage.acceptReject(ad);
     }
 
     @When("he select to see the reservations of houses")
-    public void he_select_to_see_the_reservations_of_houses() {
+    public void he_select_to_see_the_reservations_of_houses() throws SQLException {
        tenant=AdminPage.seeReservations();
     }
     @Then("a table of reservations data will printed")
-    public void a_table_of_reservations_data_will_printed() {
+    public void a_table_of_reservations_data_will_printed() throws SQLException {
         AdminPage.displayReservations(tenant);
     }
 

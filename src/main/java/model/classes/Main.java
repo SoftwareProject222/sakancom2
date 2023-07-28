@@ -22,36 +22,32 @@ public class Main {
     static String p="memesa32002@";
     private static String price="price";
     private static String services="services";
-    public static void displayHouses(int ownerID) {
-        try {
-            Connection con = DriverManager.getConnection(url,user,p);
-            Statement stmt = con.createStatement();
-            ResultSet result = stmt.executeQuery("select * from house where id_owner='" + ownerID + "'");
-            logger.info("idHouse\t location\t\t services\t\t price");
-            while (result.next()) {
-                String output=result.getInt("idhouse") + "\t" + result.getString("location") + "\t\t" + result.getString("services") + "\t\t" + result.getDouble(price) + " JD";
-                logger.info(output);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void displayHouses(int ownerID) throws SQLException {
+
+        Connection con = DriverManager.getConnection(url,user,p);
+        Statement stmt = con.createStatement();
+        ResultSet result = stmt.executeQuery("select * from house where id_owner='" + ownerID + "'");
+        logger.info("idHouse\t location\t\t services\t\t price");
+        while (result.next()) {
+            String output=result.getInt("idhouse") + "\t" + result.getString("location") + "\t\t" + result.getString("services") + "\t\t" + result.getDouble(price) + " JD";
+            logger.info(output);
         }
+
     }
-    public static void displayAllHouses(){
-        try {
-            Connection con = DriverManager.getConnection(url,user,p);
-            Statement stmt = con.createStatement();
-            ResultSet result = stmt.executeQuery("select * from house");
-            logger.info("All houses in the system: ");
-            logger.info("idHouse\t location\t\t services\t\t price\t\t idOwner");
-            while (result.next()) {
-                String output=result.getInt("idhouse")+"\t"+result.getString("location")+"\t"+result.getString("services")+"\t"+ result.getDouble(price)+" JD\t"+ result.getInt("id_owner");
-                logger.info(output);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+    public static void displayAllHouses() throws SQLException {
+
+        Connection con = DriverManager.getConnection(url,user,p);
+        Statement stmt = con.createStatement();
+        ResultSet result = stmt.executeQuery("select * from house");
+        logger.info("All houses in the system: ");
+        logger.info("idHouse\t location\t\t services\t\t price\t\t idOwner");
+        while (result.next()) {
+            String output=result.getInt("idhouse")+"\t"+result.getString("location")+"\t"+result.getString("services")+"\t"+ result.getDouble(price)+" JD\t"+ result.getInt("id_owner");
+            logger.info(output);
         }
+
     }
-    public void main(String[] args) throws URISyntaxException, IOException, SQLException {
+    public static void main(String[] args) throws URISyntaxException, IOException, SQLException {
 
         Login log=new Login();
         AdminPage adminPage;
@@ -144,13 +140,13 @@ public class Main {
                                 if(updateOption.equals("1")){
                                     logger.info("The new services of the house you want to update: ");
                                     String services= scan.nextLine();
-                                    updateHouse.updateInfo(this.services,services,Integer.parseInt(idhouse));
+                                    updateHouse.updateInfo(Main.services,services,Integer.parseInt(idhouse));
                                     updateHouse.updateMsg();
                                 }
                                 else if(updateOption.equals("2")){
                                     logger.info("The new price of the house you want to update: ");
                                     String price= scan.nextLine();
-                                    updateHouse.updateInfo(this.price,Double.parseDouble(price),Integer.parseInt(idhouse));
+                                    updateHouse.updateInfo(Main.price,Double.parseDouble(price),Integer.parseInt(idhouse));
                                     updateHouse.updateMsg();
                                 }
                                 else if(updateOption.equals("3")){
@@ -207,15 +203,17 @@ public class Main {
                             String rentNote=scan.nextLine();
                             logger.info("Enter price: ");
                             String price=scan.nextLine();
-                            advertisement=new AddAdvertisement(Integer.parseInt(houseID),photo,name,contact,location,services,Double.parseDouble(rent),rentNote,Double.parseDouble(price));
+                            advertisement=new AddAdvertisement(Integer.parseInt(houseID),photo,name,contact,location,services,Double.parseDouble(rent));
+                            advertisement.setRentNote(rentNote);
+                            advertisement.setPrice(Double.parseDouble(price));
                             AddAdvertisement.addAdv(advertisement);
-                            logger.info("The advertisement is added, but waiting Administrator to accept it ");
                             if(!AddAdvertisement.isValidHouse()){
                                 if(AddAdvertisement.getIsDuplicateHouse()){
                                     advertisement.displayReasonSameHouse();
                                 }
                                 else advertisement.displayReasonHouseNotExist();
                             }
+                            else logger.info("The advertisement is added, but waiting Administrator to accept it ");
                         }//if owner 1
                         else if (ownerChoice.equals("2")) {
                             List<House> houseList=new ArrayList<>();
@@ -224,15 +222,18 @@ public class Main {
                             logger.info("Your Housing:");
                             displayHouses(log.getOwnerID());
                             logger.info("Enter house id to see number of tenant and floor of this house: ");
-                            houseList=OwnerControlPanel.findHouse(scan.nextInt());
+                            String houseId=scan.nextLine();
+                            houseList=OwnerControlPanel.findHouse(Integer.parseInt(houseId));
                             OwnerControlPanel.displayNOTenantAndFloors(houseList);
                             ////////////////
                             logger.info("Enter floor number you want to see its apartments: ");
-                            apart=OwnerControlPanel.findFloor(scan.nextInt());
+                            String floorId=scan.nextLine();
+                            apart=OwnerControlPanel.findFloor(Integer.parseInt(floorId));
                             OwnerControlPanel.displayAparts(apart);
                             ///////////////
                             logger.info("Enter apart number that you want to see info. about it: ");
-                            apartInfoList=OwnerControlPanel.findApart(scan.nextInt());
+                            String apartId=scan.nextLine();
+                            apartInfoList=OwnerControlPanel.findApart(Integer.parseInt(apartId));
                             OwnerControlPanel.displayApartInformation(apartInfoList);
                         }//if owner 2
                         else if (ownerChoice.equals("3")) {
@@ -283,8 +284,6 @@ public class Main {
                                     }
                                 }else continue newHouse_loop;
 
-
-
                             }//newhouse loop
                         }//owner 3
                         else if (ownerChoice.equals("4")) {
@@ -304,9 +303,6 @@ public class Main {
 
             }
         }
-
-
-
 
 
     }//main

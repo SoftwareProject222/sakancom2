@@ -25,8 +25,8 @@ public class OwnerControlPanel {
         ResultSet result = stmt.executeQuery("select * from house where idhouse='" + houseId + "'");
 
         while (result.next()) {
-            houseObj=new House(result.getInt("idhouse"),result.getString("images"),result.getString("location"),result.getString("services"),result.getDouble("price"),result.getInt("id_owner"),result.getInt("no_floors"),result.getInt("no_tenant"));
-
+            houseObj=new House(result.getInt("idhouse"),result.getString("images"),result.getString("location"),result.getString("services"),result.getDouble("price"),result.getInt("id_owner"),result.getInt("no_floors"));
+            houseObj.setNoOfTenant(result.getInt("no_tenant"));
         }
         houseList.add(houseObj);
         return houseList;

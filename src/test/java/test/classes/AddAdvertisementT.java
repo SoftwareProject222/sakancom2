@@ -5,6 +5,7 @@ import code.classes.Login;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
@@ -30,7 +31,9 @@ public class AddAdvertisementT {
 
     @Given("there is an id_house with id {int}, photos {string}, owner_name {string}, contactInfo {string}, location {string}, services {string}, monthly_rent {double}, noteRent {string} and price {double}")
     public void there_is_an_id_house_with_id_photos_owner_name_contact_info_location_services_monthly_rent_note_rent_and_price(Integer id_house, String photos, String ownerName, String ownerContactInfo,  String location, String services, Double rent, String rentNote, Double price) {
-        adv=new AddAdvertisement(id_house,photos,ownerName,ownerContactInfo,location,services,rent,rentNote,price);
+        adv=new AddAdvertisement(id_house,photos,ownerName,ownerContactInfo,location,services,rent);
+        adv.setRentNote(rentNote);
+        adv.setPrice(price);
         this.id_house=id_house;
         this.photos=photos;
         this.ownerName=ownerName;
@@ -43,7 +46,7 @@ public class AddAdvertisementT {
     }
 
     @Then("the advertisement will be saved in the database")
-    public void the_advertisement_will_be_saved_in_the_database() {
+    public void the_advertisement_will_be_saved_in_the_database() throws SQLException {
         assertNotNull(adv);
 
         assertEquals(adv.getHouseId(),id_house);
@@ -64,7 +67,7 @@ public class AddAdvertisementT {
     }
 
     @Then("the advertisement will not be saved in the database")
-    public void the_advertisement_will_not_be_saved_in_the_database() {
+    public void the_advertisement_will_not_be_saved_in_the_database() throws SQLException {
         AddAdvertisement.addAdv(adv);
         assertFalse(AddAdvertisement.isValidHouse());
     }

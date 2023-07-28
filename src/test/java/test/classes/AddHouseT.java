@@ -67,7 +67,7 @@ public class AddHouseT {
     }
 
     @Then("the extra information about the house will be saved in the database")
-    public void the_extra_information_about_the_house_will_be_saved_in_the_database() {
+    public void the_extra_information_about_the_house_will_be_saved_in_the_database() throws SQLException {
         assertNotNull(housef);
 
         assertEquals(housef.getIdHouse(),id_house);
