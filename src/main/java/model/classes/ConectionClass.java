@@ -9,14 +9,14 @@ public class ConectionClass {
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
     static String p="memesa32002@";
-    private   static  Statement stmt1;
-    private   static Connection con1;
+    private Statement stmt1;
+    private Connection con1;
 
-    public static Statement getStmt1() {
+    public Statement getStmt1() {
         return stmt1;
     }
 
-    public static Connection getCon1() {
+    public  Connection getCon1() {
         return con1;
     }
 
