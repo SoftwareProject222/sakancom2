@@ -73,9 +73,7 @@ public class AddAdvertisement {
     public Double getPrice() {
         return price;
     }
-    static String url="jdbc:mysql://localhost:3306/sakancom";
-    static String user="root";
-    static String p="memesa32002@";
+
 
     private static boolean isDuplicateHouse=false;
 
@@ -93,7 +91,7 @@ public class AddAdvertisement {
         boolean flag=true;
         boolean flag2=false;
         ConectionClass c=new ConectionClass();
-        ResultSet result1 = c.getStmt1().executeQuery("select idhouse_adv from owner_advertisements");
+        ResultSet result1 = c.getStmt().executeQuery("select idhouse_adv from owner_advertisements");
         while (result1.next()) {
             if(adv.getHouseId()==result1.getInt("idhouse_adv")){
                 flag=false;
@@ -103,7 +101,7 @@ public class AddAdvertisement {
             }
         }
         if(flag){
-            ResultSet result2 = c.getStmt1().executeQuery("select idhouse from house");
+            ResultSet result2 = c.getStmt().executeQuery("select idhouse from house");
             while (result2.next()) {
                 if(adv.getHouseId()==result2.getInt("idhouse")){
                     flag2=true;
@@ -116,11 +114,11 @@ public class AddAdvertisement {
         if(flag && flag2){
             String insertStmt = "insert into owner_advertisements values('" + adv.getHouseId() + "','" + adv.getPhotos() + "','" + adv.getOwnerName() + "','" + adv.getOwnerContactInfo() +
                     "',  '" + adv.getLocation() +"','" + adv.getServices()+"'," + adv.getRent() + ",'" + adv.getRentNote() + "' ,'" + adv.getPrice() + "','no','')";
-            c.getStmt1().executeUpdate(insertStmt);
+            c.getStmt().executeUpdate(insertStmt);
             validH=true;
         }
 
-        c.getCon1().close();
+        c.getCon().close();
 
 
     }

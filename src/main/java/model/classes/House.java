@@ -11,9 +11,6 @@ public class House {
     private int noOfFloors;
     private int noOfTenant;
 
-    static String url="jdbc:mysql://localhost:3306/sakancom";
-    static String user="root";
-    static String p="memesa32002@";
     private static Logger logger = Logger.getLogger(House.class.getName());
     public House() {
     }
@@ -69,9 +66,8 @@ public class House {
 
     public static boolean findHouseId(int idhouse) throws SQLException {
         boolean ret=false;
-        Connection con1 = DriverManager.getConnection(url,user,p);
-        Statement stmt1 = con1.createStatement();
-        ResultSet result1 = stmt1.executeQuery("select idhouse from house");
+        ConectionClass c=new ConectionClass();
+        ResultSet result1 = c.getStmt().executeQuery("select idhouse from house");
         while (result1.next()) {
             if(idhouse==result1.getInt("idhouse")){
                 ret= true;
@@ -83,47 +79,44 @@ public class House {
 
     public static void addHouse(House house) throws SQLException {
 
-            Connection con = DriverManager.getConnection(url,user,p);
-            Statement stmt = con.createStatement();
+            ConectionClass c=new ConectionClass();
             String insertHouse="INSERT INTO house VALUES('"+house.getId()+"','"+house.getLink()+"','"+house.getLocation()+"','"+house.getServices()+"','"+house.getPrice()+"','"+house.getOwnerId()+"','"+house.getNoOfFloors()+"',0)";
             if(!House.findHouseId(house.getId())){
-                stmt.executeUpdate(insertHouse);
+                c.getStmt().executeUpdate(insertHouse);
                 logger.info("House added successfully");
             }else {
                 logger.info("this id is already exist, please enter another id: ");
             }
 
-            con.close();
+        c.getCon().close();
     }
     public static void addHouseInfo(HouseFloor housef) throws SQLException {
 
-        Connection con = DriverManager.getConnection(url,user,p);
-        Statement stmt = con.createStatement();
+        ConectionClass c=new ConectionClass();
         String insertHouseInfo="INSERT INTO house_floor VALUES('"+housef.getIdHouse()+"','"+housef.getIdFloor()+"','"+housef.getIdApart()+"','"+housef.getNoBathrooms()+"','"+housef.getNoBedrooms()+"','"+housef.getBalcony()+"')";
-        stmt.executeUpdate(insertHouseInfo);
+        c.getStmt().executeUpdate(insertHouseInfo);
         logger.info("House's Information added successfully");
 
     }
 
     public void updateInfo(String attribute, Object value, Integer houseId) throws SQLException {
-        Connection con = DriverManager.getConnection(url,user,p);
-        Statement stmt = con.createStatement();
+        ConectionClass c=new ConectionClass();
 
         if(House.findHouseId(houseId)){
             if(attribute.equalsIgnoreCase("services")){
                 String updateServices="UPDATE house SET services='"+value+"' WHERE idhouse='"+houseId+"'";
-                stmt.executeUpdate(updateServices);
+                c.getStmt().executeUpdate(updateServices);
             }
             else if(attribute.equalsIgnoreCase("price")){
                 String updatePrice="UPDATE house SET price='"+value+"' WHERE idhouse='"+houseId+"'";
-                stmt.executeUpdate(updatePrice);
+                c.getStmt().executeUpdate(updatePrice);
             }
             else if(attribute.equalsIgnoreCase("ownerId")){
                 String updateOwnerId="UPDATE owner SET idowner='"+value+"' WHERE idowner=(select id_owner from house where idhouse='"+houseId+"')";
-                stmt.executeUpdate(updateOwnerId);
+                c.getStmt().executeUpdate(updateOwnerId);
             }
         }
-            con.close();
+        c.getCon().close();
     }
     public void updateMsg() {
         logger.info(" Information Updated Successfully");

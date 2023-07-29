@@ -1,4 +1,5 @@
 package code.classes;
+import model.classes.ConectionClass;
 import model.classes.Tenant;
 
 import java.sql.*;
@@ -10,9 +11,6 @@ public class AdminPage {
     private int idhouse;
     private String acceptance;
     static Tenant tenant;
-    static String url="jdbc:mysql://localhost:3306/sakancom";
-    static String user="root";
-    static String p="memesa32002@";
 
     private static Logger logger = Logger.getLogger(AdminPage.class.getName());
 
@@ -30,22 +28,18 @@ public class AdminPage {
     }
 
     public static void acceptReject(AdminPage ad) throws SQLException {
-
-        Connection con = DriverManager.getConnection(url,user,p);
-        Statement stmt = con.createStatement();
+        ConectionClass c=new ConectionClass();
         String updateAccep="UPDATE owner_advertisements SET accept= '"+ad.getAcceptance()+"' WHERE idhouse_adv='"+ad.getIdhouse()+"' ";
-        stmt.executeUpdate(updateAccep);
-        con.close();
+        c.getStmt().executeUpdate(updateAccep);
+        c.getCon().close();
 
     }
 
 
     public static List<Tenant> seeReservations() throws SQLException {
         List<Tenant> tenantList = new ArrayList<>();
-
-        Connection con = DriverManager.getConnection(url,user,p);
-        Statement stmt = con.createStatement();
-        ResultSet result = stmt.executeQuery("select id_house,id_apart,idtenant,name,phone,email from tenant");
+        ConectionClass c=new ConectionClass();
+        ResultSet result = c.getStmt().executeQuery("select id_house,id_apart,idtenant,name,phone,email from tenant");
         while (result.next()) {
             tenant=new Tenant(result.getInt("id_house"),result.getInt("id_apart"),result.getInt("idtenant"), result.getString("name"),result.getInt("phone"),result.getString("email"));
             tenantList.add(tenant);
@@ -66,9 +60,8 @@ public class AdminPage {
             displayReservation(t);
         }
         String tab="\t\tـــ\t\t";
-        Connection con = DriverManager.getConnection(url,user,p);
-        Statement stmt = con.createStatement();
-        ResultSet result = stmt.executeQuery("select idhouse from house where no_tenant=0");
+        ConectionClass c=new ConectionClass();
+        ResultSet result = c.getStmt().executeQuery("select idhouse from house where no_tenant=0");
         while (result.next()) {
             String output=result.getInt("idhouse")+tab+tab+tab+"\tـــ";
             logger.info(output);

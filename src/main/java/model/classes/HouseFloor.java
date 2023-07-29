@@ -9,9 +9,6 @@ public class HouseFloor {
     private int noBedrooms;
     private String balcony;
 
-    static String url = "jdbc:mysql://localhost:3306/sakancom";
-    static String user = "root";
-    static String p = "memesa32002@";
 
     public int getIdHouse() {
         return houseId;
@@ -49,9 +46,8 @@ public class HouseFloor {
     public static boolean findHouseFloorId(int idhouse) throws SQLException {
         boolean ret = false;
 
-        Connection con1 = DriverManager.getConnection(url, user, p);
-        Statement stmt1 = con1.createStatement();
-        ResultSet result1 = stmt1.executeQuery("select id_house from house_floor");
+        ConectionClass c=new ConectionClass();
+        ResultSet result1 = c.getStmt().executeQuery("select id_house from house_floor");
         while (result1.next()) {
             if (idhouse == result1.getInt("id_house")) {
                 ret = true;

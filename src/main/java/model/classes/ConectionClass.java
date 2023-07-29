@@ -9,23 +9,20 @@ public class ConectionClass {
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
     static String p="memesa32002@";
-    private Statement stmt1;
-    private Connection con1;
+    private Statement stmt;
+    private Connection con;
 
-    public Statement getStmt1() {
-        return stmt1;
+    public Statement getStmt() {
+        return stmt;
     }
 
-    public  Connection getCon1() {
-        return con1;
+    public  Connection getCon() {
+        return con;
     }
 
     public ConectionClass() throws SQLException {
-        con1  = DriverManager.getConnection(url,user,p);
-        stmt1 = con1.createStatement();
+        con = DriverManager.getConnection(url,user,p);
+        stmt = con.createStatement();
     }
-
-
-
 
 }

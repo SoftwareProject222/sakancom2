@@ -16,16 +16,13 @@ import java.util.logging.Logger;
 public class Main {
     private static Logger logger = Logger.getLogger(Main.class.getName());
     private static final String IN_VALID_INPUT = "Please enter valid input";
-    static String url = "jdbc:mysql://localhost:3306/sakancom";
-    static String user = "root";
-    static String p = "memesa32002@";
+
     private static String price = "price";
     private static String services = "services";
     private static String username;
     public static void displayAllHouses() throws SQLException {
-        Connection con = DriverManager.getConnection(url,user,p);
-        Statement stmt = con.createStatement();
-        ResultSet result = stmt.executeQuery("select * from house");
+        ConectionClass c=new ConectionClass();
+        ResultSet result = c.getStmt().executeQuery("select * from house");
         logger.info("All houses in the system: ");
         logger.info("idHouse\t location\t\t services\t\t price\t\t idOwner");
         while (result.next()) {
@@ -37,9 +34,8 @@ public class Main {
 
     public static void displayHouses(int ownerID) throws SQLException {
 
-        Connection con = DriverManager.getConnection(url,user,p);
-        Statement stmt = con.createStatement();
-        ResultSet result = stmt.executeQuery("select * from house where id_owner='" + ownerID + "'");
+        ConectionClass c=new ConectionClass();
+        ResultSet result = c.getStmt().executeQuery("select * from house where id_owner='" + ownerID + "'");
         logger.info("idHouse\t location\t\t services\t\t price");
         while (result.next()) {
             String output=result.getInt("idhouse") + "\t" + result.getString("location") + "\t\t" + result.getString(services) + "\t\t" + result.getDouble(price) + " JD";

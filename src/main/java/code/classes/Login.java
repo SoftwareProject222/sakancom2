@@ -1,5 +1,7 @@
 package code.classes;
 
+import model.classes.ConectionClass;
+
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -10,9 +12,6 @@ public class Login {
     private int ownerID;
     private String ownerName;
 
-    static String url="jdbc:mysql://localhost:3306/sakancom";
-    static String user="root";
-    static String p="memesa32002@";
     public void setLoggedin(boolean loggedin) {
         isLoggedin = loggedin;
     }
@@ -43,8 +42,7 @@ public class Login {
         this.isLoggedin = false;
     }
     public void logInCheck(String username, String password, String userChoice) throws SQLException {
-        Connection con = DriverManager.getConnection(url,user,p);
-        Statement stmt=con.createStatement();
+        ConectionClass c=new ConectionClass();
 
         String query = "";
         switch (userChoice) {
@@ -61,7 +59,7 @@ public class Login {
                 break;
         }
         if(!query.equals("")){
-            ResultSet result = stmt.executeQuery(query);
+            ResultSet result = c.getStmt().executeQuery(query);
 
             while (result.next()) {
                 if (result.getString("username").equals(username) && result.getString("password").equals(password)) {
