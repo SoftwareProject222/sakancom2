@@ -1,5 +1,7 @@
 package code.classes;
 
+import model.classes.ConectionClass;
+
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -91,9 +93,7 @@ public class AddAdvertisement {
         boolean flag=true;
         boolean flag2=false;
         Connection con1;
-        con1 = DriverManager.getConnection(url,user,p);
-        Statement stmt1 = con1.createStatement();
-        ResultSet result1 = stmt1.executeQuery("select idhouse_adv from owner_advertisements");
+        ResultSet result1 = ConectionClass.stmt1.executeQuery("select idhouse_adv from owner_advertisements");
         while (result1.next()) {
             if(adv.getHouseId()==result1.getInt("idhouse_adv")){
                 flag=false;
@@ -103,7 +103,7 @@ public class AddAdvertisement {
             }
         }
         if(flag){
-            ResultSet result2 = stmt1.executeQuery("select idhouse from house");
+            ResultSet result2 = ConectionClass.stmt1.executeQuery("select idhouse from house");
             while (result2.next()) {
                 if(adv.getHouseId()==result2.getInt("idhouse")){
                     flag2=true;
@@ -116,11 +116,11 @@ public class AddAdvertisement {
         if(flag && flag2){
             String insertStmt = "insert into owner_advertisements values('" + adv.getHouseId() + "','" + adv.getPhotos() + "','" + adv.getOwnerName() + "','" + adv.getOwnerContactInfo() +
                     "',  '" + adv.getLocation() +"','" + adv.getServices()+"'," + adv.getRent() + ",'" + adv.getRentNote() + "' ,'" + adv.getPrice() + "','no','')";
-            stmt1.executeUpdate(insertStmt);
+            ConectionClass.stmt1.executeUpdate(insertStmt);
             validH=true;
         }
 
-        con1.close();
+        ConectionClass.con1.close();
 
 
     }
