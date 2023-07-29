@@ -112,8 +112,20 @@ public class AddAdvertisement {
         }
 
         if(flag && flag2){
-            String insertStmt = "insert into owner_advertisements values('" + adv.getHouseId() + "','" + adv.getPhotos() + "','" + adv.getOwnerName() + "','" + adv.getOwnerContactInfo() +
-                    "',  '" + adv.getLocation() +"','" + adv.getServices()+"'," + adv.getRent() + ",'" + adv.getRentNote() + "' ,'" + adv.getPrice() + "','no','')";
+
+            String insertStmt = "INSERT INTO owner_advertisements VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'no', '')";
+            PreparedStatement preparedStatement = c.getCon().prepareStatement(insertStmt);
+            preparedStatement.setInt(1, adv.getHouseId());
+            preparedStatement.setString(2, adv.getPhotos());
+            preparedStatement.setString(3, adv.getOwnerName());
+            preparedStatement.setString(4, adv.getOwnerContactInfo());
+            preparedStatement.setString(5, adv.getLocation());
+            preparedStatement.setString(6, adv.getServices());
+            preparedStatement.setDouble(7, adv.getRent());
+            preparedStatement.setString(8, adv.getRentNote());
+            preparedStatement.setDouble(9, adv.getPrice());
+
+            preparedStatement.executeUpdate();
             c.getStmt().executeUpdate(insertStmt);
             validH=true;
         }
