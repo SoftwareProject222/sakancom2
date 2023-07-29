@@ -327,8 +327,6 @@ public class Main {
 
             if (!HouseFloor.findHouseFloorId(newHouse.getId())) {
                 addHouseDetails(scan, newHouse);
-            } else {
-                continue;
             }
         }
     }
@@ -356,12 +354,10 @@ public class Main {
 
             logger.info("1- continue adding details\n2- add another new house\n3- back to my page");
             String x = scan.nextLine();
-            if (x.equals("1")) {
-                continue;
-            } else if (x.equals("2")) {
+            if (x.equals("2")) {
                 break;
             } else if (x.equals("3")) {
-                break;
+                displayOwnerOptions();
             }
         }
     }
