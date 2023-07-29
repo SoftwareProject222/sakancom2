@@ -85,7 +85,7 @@ public class House {
                 c.getStmt().executeUpdate(insertHouse);
                 logger.info("House added successfully");
             }else {
-                logger.info("this id is already exist, please enter another id: ");
+                logger.info("this id is already exist, please enter another id ");
             }
 
         c.getCon().close();

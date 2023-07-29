@@ -312,7 +312,9 @@ public class Main {
     }
 
     private static void addNewHouse(Login log, Scanner scan) throws SQLException {
-        while (true) {
+        boolean shouldAddNewHouse = true;
+
+        while (shouldAddNewHouse) {
             logger.info("Enter the required information for the new home: ");
             logger.info("Enter house id: ");
             String houseID = scan.nextLine();
@@ -335,8 +337,13 @@ public class Main {
             if (!HouseFloor.findHouseFloorId(newHouse.getId())) {
                 addHouseDetails(scan, newHouse);
             }
+
+            logger.info("Do you want to to try add again? (yes/no)");
+            String addAnotherHouse = scan.nextLine();
+            shouldAddNewHouse = addAnotherHouse.equalsIgnoreCase("yes");
         }
     }
+
 
     private static void addHouseDetails(Scanner scan, House newHouse) throws SQLException {
         while (true) {
