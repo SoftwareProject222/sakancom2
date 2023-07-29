@@ -9,8 +9,16 @@ public class ConectionClass {
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
     static String p="memesa32002@";
-    public  static Statement stmt1;
-    public  static Connection con1;
+    private   static  Statement stmt1;
+    private   static Connection con1;
+
+    public static Statement getStmt1() {
+        return stmt1;
+    }
+
+    public static Connection getCon1() {
+        return con1;
+    }
 
     public ConectionClass() throws SQLException {
         con1  = DriverManager.getConnection(url,user,p);

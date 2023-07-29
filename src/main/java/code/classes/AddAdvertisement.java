@@ -92,8 +92,7 @@ public class AddAdvertisement {
     public static void addAdv(AddAdvertisement adv) throws SQLException {
         boolean flag=true;
         boolean flag2=false;
-        Connection con1;
-        ResultSet result1 = ConectionClass.stmt1.executeQuery("select idhouse_adv from owner_advertisements");
+        ResultSet result1 = ConectionClass.getStmt1().executeQuery("select idhouse_adv from owner_advertisements");
         while (result1.next()) {
             if(adv.getHouseId()==result1.getInt("idhouse_adv")){
                 flag=false;
@@ -103,7 +102,7 @@ public class AddAdvertisement {
             }
         }
         if(flag){
-            ResultSet result2 = ConectionClass.stmt1.executeQuery("select idhouse from house");
+            ResultSet result2 = ConectionClass.getStmt1().executeQuery("select idhouse from house");
             while (result2.next()) {
                 if(adv.getHouseId()==result2.getInt("idhouse")){
                     flag2=true;
@@ -116,11 +115,11 @@ public class AddAdvertisement {
         if(flag && flag2){
             String insertStmt = "insert into owner_advertisements values('" + adv.getHouseId() + "','" + adv.getPhotos() + "','" + adv.getOwnerName() + "','" + adv.getOwnerContactInfo() +
                     "',  '" + adv.getLocation() +"','" + adv.getServices()+"'," + adv.getRent() + ",'" + adv.getRentNote() + "' ,'" + adv.getPrice() + "','no','')";
-            ConectionClass.stmt1.executeUpdate(insertStmt);
+            ConectionClass.getStmt1().executeUpdate(insertStmt);
             validH=true;
         }
 
-        ConectionClass.con1.close();
+        ConectionClass.getCon1().close();
 
 
     }
