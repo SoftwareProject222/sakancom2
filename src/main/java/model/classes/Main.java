@@ -101,7 +101,6 @@ public class Main {
     private static void handleAdminTasks(Login log, Scanner scan) throws URISyntaxException, IOException, SQLException {
         String hello = "Hello " + username;
         logger.info(hello);
-        AdminPage adminPage;
         House updateHouse = new House();
 
         while (true) {
@@ -213,77 +212,160 @@ public class Main {
     private static void handleOwnerTasks(Login log, Scanner scan) throws SQLException {
         String hello = "Hello " + log.getOwnerName();
         logger.info(hello);
-        AddAdvertisement advertisement;
+
         while (true) {
-            logger.info("1- Add advertisement for an existing house");
-            logger.info("2- See all housing with all details");
-            logger.info("3- Add a new house");
-            logger.info("4- Log out");
+            displayOwnerOptions();
             String ownerChoice = scan.nextLine();
 
-            if (ownerChoice.equals("1")) {
-                displayHouses(log.getOwnerID());
-                logger.info("Enter house id: ");
-                String houseID=scan.nextLine();
-                logger.info("Add photos: ");
-                String photo=scan.nextLine();
-                logger.info("Enter your name: ");
-                String name=scan.nextLine();
-                logger.info("Enter your contact info.: ");
-                String contact=scan.nextLine();
-                logger.info("Enter location: ");
-                String location=scan.nextLine();
-                logger.info("Enter services: ");
-                String services=scan.nextLine();
-                logger.info("Enter monthly rent: ");
-                String rent=scan.nextLine();
-                logger.info("Enter rent notes about inclusive of electricity and water or not: ");
-                String rentNote=scan.nextLine();
-                logger.info("Enter price: ");
-                String price=scan.nextLine();
-                advertisement=new AddAdvertisement(Integer.parseInt(houseID),photo,name,contact,location,services,Double.parseDouble(rent));
-                advertisement.setRentNote(rentNote);
-                advertisement.setPrice(Double.parseDouble(price));
-                AddAdvertisement.addAdv(advertisement);
-                if(!AddAdvertisement.isValidHouse()){
-                    if(AddAdvertisement.getIsDuplicateHouse()){
-                        advertisement.displayReasonSameHouse();
-                    }
-                    else advertisement.displayReasonHouseNotExist();
-                }
-                else logger.info("The advertisement is added, but waiting Administrator to accept it ");
-
-            } else if (ownerChoice.equals("2")) {
-                List<House> houseList=new ArrayList<>();
-                List<Integer> apart=new ArrayList<>();
-                List<HouseFloor> apartInfoList = new ArrayList<>();
-                logger.info("Your Housing:");
-                displayHouses(log.getOwnerID());
-                logger.info("Enter house id to see number of tenant and floor of this house: ");
-                String houseId=scan.nextLine();
-                houseList=OwnerControlPanel.findHouse(Integer.parseInt(houseId));
-                OwnerControlPanel.displayNOTenantAndFloors(houseList);
-                ////////////////
-                logger.info("Enter floor number you want to see its apartments: ");
-                String floorId=scan.nextLine();
-                apart=OwnerControlPanel.findFloor(Integer.parseInt(floorId));
-                OwnerControlPanel.displayAparts(apart);
-                ///////////////
-                logger.info("Enter apart number that you want to see info. about it: ");
-                String apartId=scan.nextLine();
-                apartInfoList=OwnerControlPanel.findApart(Integer.parseInt(apartId));
-                OwnerControlPanel.displayApartInformation(apartInfoList);
-
-            } else if (ownerChoice.equals("3")) {
-                // Perform actions for owner choice 3
-            } else if (ownerChoice.equals("4")) {
-                log.logout();
-                break;
-            } else {
-                logger.warning(IN_VALID_INPUT);
+            switch (ownerChoice) {
+                case "1":
+                    handleAdvertisement(log, scan);
+                    break;
+                case "2":
+                    handleHouseDetails(log, scan);
+                    break;
+                case "3":
+                    addNewHouse(log, scan);
+                    break;
+                case "4":
+                    log.logout();
+                    return;
+                default:
+                    logger.warning(IN_VALID_INPUT);
+                    break;
             }
         }
     }
+
+    private static void displayOwnerOptions() {
+        logger.info("1- Add advertisement for an existing house");
+        logger.info("2- See all housing with all details");
+        logger.info("3- Add a new house");
+        logger.info("4- Log out");
+    }
+
+    private static void handleAdvertisement(Login log, Scanner scan) throws SQLException {
+        displayHouses(log.getOwnerID());
+        logger.info("Enter house id: ");
+        String houseID = scan.nextLine();
+        logger.info("Add photos: ");
+        String photo = scan.nextLine();
+        logger.info("Enter your name: ");
+        String name = scan.nextLine();
+        logger.info("Enter your contact info.: ");
+        String contact = scan.nextLine();
+        logger.info("Enter location: ");
+        String location = scan.nextLine();
+        logger.info("Enter services: ");
+        String services = scan.nextLine();
+        logger.info("Enter monthly rent: ");
+        String rent = scan.nextLine();
+        logger.info("Enter rent notes about inclusive of electricity and water or not: ");
+        String rentNote = scan.nextLine();
+        logger.info("Enter price: ");
+        String price = scan.nextLine();
+        AddAdvertisement advertisement = new AddAdvertisement(
+                Integer.parseInt(houseID), photo, name, contact, location, services, Double.parseDouble(rent)
+        );
+        advertisement.setRentNote(rentNote);
+        advertisement.setPrice(Double.parseDouble(price));
+        AddAdvertisement.addAdv(advertisement);
+        if (!AddAdvertisement.isValidHouse()) {
+            if (AddAdvertisement.getIsDuplicateHouse()) {
+                advertisement.displayReasonSameHouse();
+            } else {
+                advertisement.displayReasonHouseNotExist();
+            }
+        } else {
+            logger.info("The advertisement is added, but waiting Administrator to accept it ");
+        }
+    }
+
+    private static void handleHouseDetails(Login log, Scanner scan) throws SQLException {
+        List<House> houseList = new ArrayList<>();
+        List<Integer> apart = new ArrayList<>();
+        List<HouseFloor> apartInfoList = new ArrayList<>();
+
+        logger.info("Your Housing:");
+        displayHouses(log.getOwnerID());
+        logger.info("Enter house id to see number of tenant and floor of this house: ");
+        String houseId = scan.nextLine();
+        houseList = OwnerControlPanel.findHouse(Integer.parseInt(houseId));
+        OwnerControlPanel.displayNOTenantAndFloors(houseList);
+
+        logger.info("Enter floor number you want to see its apartments: ");
+        String floorId = scan.nextLine();
+        apart = OwnerControlPanel.findFloor(Integer.parseInt(floorId));
+        OwnerControlPanel.displayAparts(apart);
+
+        logger.info("Enter apart number that you want to see info. about it: ");
+        String apartId = scan.nextLine();
+        apartInfoList = OwnerControlPanel.findApart(Integer.parseInt(apartId));
+        OwnerControlPanel.displayApartInformation(apartInfoList);
+    }
+
+    private static void addNewHouse(Login log, Scanner scan) throws SQLException {
+        while (true) {
+            logger.info("Enter the required information for the new home: ");
+            logger.info("Enter house id: ");
+            String houseID = scan.nextLine();
+            logger.info("Add photos: ");
+            String photo = scan.nextLine();
+            logger.info("Enter location: ");
+            String location = scan.nextLine();
+            logger.info("Enter services: ");
+            String services = scan.nextLine();
+            logger.info("Enter price(JD): ");
+            String price = scan.nextLine();
+            logger.info("Enter number of floors: ");
+            String noFloors = scan.nextLine();
+            House newHouse = new House(
+                    Integer.parseInt(houseID), photo, location, services, Double.parseDouble(price),
+                    log.getOwnerID(), Integer.parseInt(noFloors)
+            );
+            House.addHouse(newHouse);
+
+            if (!HouseFloor.findHouseFloorId(newHouse.getId())) {
+                addHouseDetails(scan, newHouse);
+            } else {
+                continue;
+            }
+        }
+    }
+
+    private static void addHouseDetails(Scanner scan, House newHouse) throws SQLException {
+        while (true) {
+            logger.info("Enter the details for this new new home: ");
+            logger.info("Enter floor number: ");
+            String idfloor = scan.nextLine();
+            logger.info("Enter apartment number: ");
+            String idapart = scan.nextLine();
+            logger.info("Enter number of bathrooms for this apartment: ");
+            String noBathrooms = scan.nextLine();
+            logger.info("Enter number of bedrooms for this apartment: ");
+            String noBedrooms = scan.nextLine();
+            logger.info("Is there's a balcony? yes/no: ");
+            String balcony = scan.nextLine();
+            HouseFloor newHouseFloor = new HouseFloor(
+                    newHouse.getId(), Integer.parseInt(idfloor),
+                    Integer.parseInt(idapart), Integer.parseInt(noBathrooms),
+                    Integer.parseInt(noBedrooms), balcony
+            );
+            logger.info(newHouseFloor.getIdHouse() + "");
+            House.addHouseInfo(newHouseFloor);
+
+            logger.info("1- continue adding details\n2- add another new house\n3- back to my page");
+            String x = scan.nextLine();
+            if (x.equals("1")) {
+                continue;
+            } else if (x.equals("2")) {
+                break;
+            } else if (x.equals("3")) {
+                break;
+            }
+        }
+    }
+
 
     private static void handleTenantTasks() {
         logger.info("Tenant functionality is not implemented yet.");
