@@ -45,9 +45,8 @@ public class Main {
     }
     public static void main(String[] args) throws URISyntaxException, IOException, SQLException {
         logger.info("------* Welcome to SAKANCOM system *------");
-
-        Scanner scan = new Scanner(System.in);
         boolean exitSystem = false;
+        Scanner scan = new Scanner(System.in);
 
         while (!exitSystem) {
             logger.info("-> Please, choose how you want to login to the system:");
@@ -55,11 +54,13 @@ public class Main {
             logger.info("2- Tenant");
             logger.info("3- Owner");
             logger.info("Enter 'exit' to end the system.");
+
             String choice = scan.nextLine();
 
-            if (choice.equalsIgnoreCase("exit")) {
-                exitSystem = true;
-                continue;
+            if(choice.equals("exit")){
+                exitSystem=true;
+                logger.info("Thank you for using SAKANCOM system. Goodbye!");
+                System.exit(1);
             }
 
             if (!choice.equals("1") && !choice.equals("2") && !choice.equals("3")) {
@@ -80,9 +81,6 @@ public class Main {
                 }
             }
         }
-
-        // End of the system
-        logger.info("Thank you for using SAKANCOM system. Goodbye!");
     }
 
 
