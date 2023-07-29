@@ -47,13 +47,20 @@ public class Main {
         logger.info("------* Welcome to SAKANCOM system *------");
 
         Scanner scan = new Scanner(System.in);
+        boolean exitSystem = false;
 
-        while (true) {
+        while (!exitSystem) {
             logger.info("-> Please, choose how you want to login to the system:");
             logger.info("1- Admin");
             logger.info("2- Tenant");
             logger.info("3- Owner");
+            logger.info("Enter 'exit' to end the system.");
             String choice = scan.nextLine();
+
+            if (choice.equalsIgnoreCase("exit")) {
+                exitSystem = true;
+                continue;
+            }
 
             if (!choice.equals("1") && !choice.equals("2") && !choice.equals("3")) {
                 logger.info("The choice is not valid");
@@ -73,7 +80,11 @@ public class Main {
                 }
             }
         }
+
+        // End of the system
+        logger.info("Thank you for using SAKANCOM system. Goodbye!");
     }
+
 
     private static Login performLogin(String choice) throws SQLException {
         Scanner scan = new Scanner(System.in);
