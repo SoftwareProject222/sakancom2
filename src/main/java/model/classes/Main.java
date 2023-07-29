@@ -102,90 +102,115 @@ public class Main {
         String hello = "Hello " + username;
         logger.info(hello);
         AdminPage adminPage;
-        House updateHouse=new House();
+        House updateHouse = new House();
+
         while (true) {
-            logger.info("1- See the requests of advertisement to accept or reject it");
-            logger.info("2- See the reservations of houses");
-            logger.info("3- Update house information");
-            logger.info("4- Log out");
+            displayAdminOptions();
             String adminChoice = scan.nextLine();
 
-            if (adminChoice.equals("1")) {
-                /*open web page*/
-                Desktop d=Desktop.getDesktop();
-                String uri="http://localhost/sakancom/table.php";
-                d.browse(new URI(uri));
-                while (true){
-                    logger.info("1- Enter house id you want to accept its advertisement");
-                    logger.info("2- <-Back");
-                    String advChoice= scan.nextLine();
-                    if (advChoice.equals("1")){
-                        logger.info("house id: ");
-                        String houseID= scan.nextLine();
+            switch (adminChoice) {
+                case "1":
+                    handleAdvertisementRequests(scan);
+                    break;
+                case "2":
+                    displayReservations();
+                    break;
+                case "3":
+                    updateHouseInformation(scan, updateHouse);
+                    break;
+                case "4":
+                    log.logout();
+                    return;
+                default:
+                    logger.warning(IN_VALID_INPUT);
+                    break;
+            }
+        }
+    }
 
-                        logger.info("acceptance (yes/no): ");
-                        String acceptance= scan.nextLine();
-                        adminPage=new AdminPage(Integer.parseInt(houseID),acceptance);
-                        AdminPage.acceptReject(adminPage);
-                        logger.info("DONE");
-                    }
-                    else if(advChoice.equals("2")){
-                        break;
-                    }
-                }//while 1- accept
-            } else if (adminChoice.equals("2")) {
-                List<Tenant> tenantList = new ArrayList<>();
-                tenantList=AdminPage.seeReservations();
-                AdminPage.displayReservations(tenantList);
-            } else if (adminChoice.equals("3")) {
-                displayAllHouses();
-                logger.info("Enter the ID of the house for updating: ");
-                String idhouse=scan.nextLine();
-                if(!House.findHouseId(Integer.parseInt(idhouse))){
-                    updateHouse.unupdatedMsg();
-                    continue;
-                }
-                while (true){
-                    logger.info("Choose what do you want to update: ");
-                    logger.info("1- Change Services");
-                    logger.info("2- Change Price");
-                    logger.info("3- Change OwnerID");
-                    logger.info("4- Back");
+    private static void displayAdminOptions() {
+        logger.info("1- See the requests of advertisement to accept or reject it");
+        logger.info("2- See the reservations of houses");
+        logger.info("3- Update house information");
+        logger.info("4- Log out");
+    }
 
-                    String updateOption=scan.nextLine();
-                    if(updateOption.equals("1")){
-                        logger.info("The new services of the house you want to update: ");
-                        String services= scan.nextLine();
-                        updateHouse.updateInfo(Main.services,services,Integer.parseInt(idhouse));
-                        updateHouse.updateMsg();
-                    }
-                    else if(updateOption.equals("2")){
-                        logger.info("The new price of the house you want to update: ");
-                        String price= scan.nextLine();
-                        updateHouse.updateInfo(Main.price,Double.parseDouble(price),Integer.parseInt(idhouse));
-                        updateHouse.updateMsg();
-                    }
-                    else if(updateOption.equals("3")){
-                        logger.info("The new ownerId of the house you want to update: ");
-                        String ownerid= scan.nextLine();
-                        updateHouse.updateInfo("ownerId",Integer.parseInt(ownerid),Integer.parseInt(idhouse));
-                        updateHouse.updateMsg();
-                    }
-                    else if(updateOption.equals("4")){
-                        break;
-                    }
-                    else logger.warning(IN_VALID_INPUT);
-                }
-            } else if (adminChoice.equals("4")) {
-                log.logout();
-                break;
+    private static void handleAdvertisementRequests(Scanner scan) throws URISyntaxException, IOException, SQLException {
+        /*open web page*/
+        Desktop d = Desktop.getDesktop();
+        String uri = "http://localhost/sakancom/table.php";
+        d.browse(new URI(uri));
+
+        while (true) {
+            logger.info("1- Enter house id you want to accept its advertisement");
+            logger.info("2- <-Back");
+            String advChoice = scan.nextLine();
+            if (advChoice.equals("1")) {
+                logger.info("house id: ");
+                String houseID = scan.nextLine();
+
+                logger.info("acceptance (yes/no): ");
+                String acceptance = scan.nextLine();
+                AdminPage adminPage = new AdminPage(Integer.parseInt(houseID), acceptance);
+                AdminPage.acceptReject(adminPage);
+                logger.info("DONE");
+            } else if (advChoice.equals("2")) {
+                return;
+            }
+        }
+    }
+
+    private static void displayReservations() throws SQLException {
+        List<Tenant> tenantList = AdminPage.seeReservations();
+        AdminPage.displayReservations(tenantList);
+    }
+
+    private static void updateHouseInformation(Scanner scan, House updateHouse) throws SQLException {
+        displayAllHouses();
+        logger.info("Enter the ID of the house for updating: ");
+        String idhouse = scan.nextLine();
+        if (!House.findHouseId(Integer.parseInt(idhouse))) {
+            updateHouse.unupdatedMsg();
+            return;
+        }
+
+        while (true) {
+            displayUpdateOptions();
+            String updateOption = scan.nextLine();
+
+            if (updateOption.equals("1")) {
+                logger.info("The new services of the house you want to update: ");
+                String services = scan.nextLine();
+                updateHouse.updateInfo(Main.services, services, Integer.parseInt(idhouse));
+                updateHouse.updateMsg();
+            } else if (updateOption.equals("2")) {
+                logger.info("The new price of the house you want to update: ");
+                String price = scan.nextLine();
+                updateHouse.updateInfo(Main.price, Double.parseDouble(price), Integer.parseInt(idhouse));
+                updateHouse.updateMsg();
+            } else if (updateOption.equals("3")) {
+                logger.info("The new ownerId of the house you want to update: ");
+                String ownerid = scan.nextLine();
+                updateHouse.updateInfo("ownerId", Integer.parseInt(ownerid), Integer.parseInt(idhouse));
+                updateHouse.updateMsg();
+            } else if (updateOption.equals("4")) {
+                return;
             } else {
                 logger.warning(IN_VALID_INPUT);
             }
         }
     }
 
-    private static void handleOwnerTasks(Login log, Scanner scan) throws URISyntaxException, IOException, SQLException {
+    private static void displayUpdateOptions() {
+        logger.info("Choose what do you want to update: ");
+        logger.info("1- Change Services");
+        logger.info("2- Change Price");
+        logger.info("3- Change OwnerID");
+        logger.info("4- Back");
+    }
+
+
+    private static void handleOwnerTasks(Login log, Scanner scan) throws SQLException {
         String hello = "Hello " + log.getOwnerName();
         logger.info(hello);
         AddAdvertisement advertisement;
