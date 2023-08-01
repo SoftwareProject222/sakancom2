@@ -50,11 +50,7 @@ public class Login {
                 query = "SELECT * FROM admin";
                 break;
             case "2":
-                query = "SELECT * FROM tenant";
-                break;
-            case "3":
-                query = "SELECT * FROM owner";
-                break;
+                query = "SELECT * FROM tenant"; break;  case "3":  query = "SELECT * FROM owner"; break;
             default:
                 break;
         }
@@ -64,9 +60,7 @@ public class Login {
             while (result.next()) {
                 if (result.getString("username").equals(username) && result.getString("password").equals(password)) {
                     login();
-                    if(userChoice.equals("3")){
-                        ownerID=result.getInt("idowner");
-                        ownerName=result.getString("name");
+                    if(userChoice.equals("3")){ ownerID=result.getInt("idowner"); ownerName=result.getString("name");
                     }
                     break;
                 }
