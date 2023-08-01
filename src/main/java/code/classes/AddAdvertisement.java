@@ -102,20 +102,13 @@ public class AddAdvertisement {
         }
         if(flag){
             ResultSet result2 = c.getStmt().executeQuery("select idhouse from house");
-            while (result2.next()) {
-                if(adv.getHouseId()==result2.getInt("idhouse")){
-                    flag2=true;
-                    isDuplicateHouse=false;
-                    break;
-                }
+            while (result2.next()) { if(adv.getHouseId()==result2.getInt("idhouse")){ flag2=true; isDuplicateHouse=false; break;}
             }
         }
 
         if(flag && flag2){
-            String insertStmt = "insert into owner_advertisements values('" + adv.getHouseId() + "','" + adv.getPhotos() + "','" + adv.getOwnerName() + "','" + adv.getOwnerContactInfo() +
-                    "',  '" + adv.getLocation() +"','" + adv.getServices()+"'," + adv.getRent() + ",'" + adv.getRentNote() + "' ,'" + adv.getPrice() + "','no','')";
-            c.getStmt().executeUpdate(insertStmt);
-            validH=true;
+            String insertStmt = "insert into owner_advertisements values('" + adv.getHouseId() + "','" + adv.getPhotos() + "','" + adv.getOwnerName() + "','" + adv.getOwnerContactInfo() + "',  '" + adv.getLocation() +"','" + adv.getServices()+"'," + adv.getRent() + ",'" + adv.getRentNote() + "' ,'" + adv.getPrice() + "','no','')";
+            c.getStmt().executeUpdate(insertStmt); validH=true;
         }
 
         c.getCon().close();

@@ -68,6 +68,9 @@ public class AddAdvertisementT {
 
     @Then("the advertisement will not be saved in the database")
     public void the_advertisement_will_not_be_saved_in_the_database() throws SQLException {
+        ////nothing
+        AddAdvertisement.getIsDuplicateHouse();
+
         AddAdvertisement.addAdv(adv);
         assertFalse(AddAdvertisement.isValidHouse());
     }
