@@ -124,6 +124,7 @@ public class Tenant {
             }
         } finally {
             // Close the resources properly
+
             if (stmt != null) {
                 stmt.close();
             }

@@ -85,6 +85,7 @@ public class House {
         }
     }
 
+
     // Method to display available houses
     public static void displayAvailableHousing(List<House> availableHousing) {
         logger.info("House id\t Location\t Services\t Price\n ");

@@ -50,6 +50,7 @@ public class AdminPage {
     }
 
     private static void displayReservation(Tenant t) {
+
         logger.info(t.getIdHouse()+"\t\t\t"+t.getIdApart()+"\t\t"+t.getIdTenant()+"\t"+t.getName()+"\t\t 0"+t.getPhone()+","+t.getEmail()+"\t\t 0"+t.getAge()+","+t.getUniversityMajor()+"\n");
     }
 

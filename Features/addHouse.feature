@@ -1,4 +1,4 @@
-Feature: Add House
+  Feature: Add House
 
   Scenario: add new house successfully
     Given that the admin is logged in
