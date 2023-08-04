@@ -4,4 +4,5 @@ Feature: Advertise Used Furniture
     Given I am a logged-in tenant
     When I access the special window for furniture
     Then I should be able to advertise my own used furniture for sale
+    
 

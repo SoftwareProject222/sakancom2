@@ -15,3 +15,4 @@ Feature: Tenant Control Panel
     When I try to access the tenant control panel
     Then I should receive an error message indicating no booking
 
+
