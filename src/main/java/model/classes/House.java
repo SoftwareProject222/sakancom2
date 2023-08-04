@@ -96,7 +96,6 @@ public class House {
         String insertHouseInfo="INSERT INTO house_floor VALUES('"+housef.getIdHouse()+"','"+housef.getIdFloor()+"','"+housef.getIdApart()+"','"+housef.getNoBathrooms()+"','"+housef.getNoBedrooms()+"','"+housef.getBalcony()+"')";
         c.getStmt().executeUpdate(insertHouseInfo);
         logger.info("House's Information added successfully");
-
     }
 
     public void updateInfo(String attribute, Object value, Integer houseId) throws SQLException {
