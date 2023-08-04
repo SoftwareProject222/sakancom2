@@ -18,3 +18,4 @@ Feature: Add advertisement
     And there is an id_house with id -1, photos "house1.jpg", owner_name "Lemara Ali", contactInfo "lemaraali@gmail.com, 0599632333", location "Nablus,PalestineStreet", services "internet", monthly_rent 1000, noteRent "inclusive of electricity" and price 5550
     Then the advertisement will not be saved in the database
     And show the reason why it can't save2
+

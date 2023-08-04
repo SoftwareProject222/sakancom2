@@ -39,3 +39,5 @@ Feature: Book Accommodation
     When I access the information section
     Then I should see the ages of the people living in it
     And I should see the university majors of the people living in it
+
+

@@ -10,14 +10,12 @@ import java.sql.SQLException;
 public class AdvertiseFurnitureT {
    Tenant tenant;
     private int furnitureId; // Used to store the ID of the advertised furniture
-
     @Given("I'm a logged-in Tenant")
     public void iAmALoggedInTenant() {
         // Create a sample tenant with some data
         tenant = new Tenant(1, 0, 0, "Leen", 1234567890, "leenbatt@example.com", 25, "Computer Science");
 
     }
-
     @When("I access the special window for furniture")
     public void iAccessTheSpecialWindowForFurniture() {
 

@@ -6,3 +6,4 @@ Feature: Advertise Used Furniture
     Then I should be able to advertise my own used furniture for sale
     
 
+

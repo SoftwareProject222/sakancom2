@@ -16,3 +16,4 @@ Feature: Tenant Control Panel
     Then I should receive an error message indicating no booking
 
 
+

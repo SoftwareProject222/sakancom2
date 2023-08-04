@@ -41,7 +41,7 @@ public class TenantControlPanelT {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // Retrieve the rent due date based on the house ID
+        // Retrieve the rent due date based on the house ID:
         try {
             rentDueDate = House.getRentDueDate(house.getId());
         } catch (SQLException e) {
@@ -61,7 +61,6 @@ public class TenantControlPanelT {
         assertEquals("Tenant Name", Tenant.getName());
 
     }
-
     @Then("I should see the name of the residence owner")
     public void iShouldSeeTheNameOfTheResidenceOwner() {
         assertNotNull(residenceOwnerName);
@@ -76,9 +75,7 @@ public class TenantControlPanelT {
     public void iShouldSeeWhenTheRentIsPaidTimeToPay() {
         assertNotNull(rentDueDate);
         assertEquals("2023-08-01", rentDueDate);
-
     }
-
     @Given("I have not booked any accommodation")
     public void iHaveNotBookedAnyAccommodation() {
         house = null;

@@ -90,7 +90,6 @@ public class ViewHousingT {
     public void iShouldBeAbleToSeeTheServicesAvailableInTheHousing() {
         assertNotNull(selectedHouse);
         assertNotNull(selectedHouse.getServices());
-
         // Display house details
         House.displayHouseDetails(selectedHouse);
     }

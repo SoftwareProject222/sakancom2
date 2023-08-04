@@ -1,5 +1,6 @@
   Feature: Add House
 
+
   Scenario: add new house successfully
     Given that the admin is logged in
     And admin enter the id_house 1126, photos "house2.png", location "Old City", services "Cleaning Service,Security" price 7200, id_owner 22, no_floors 1
