@@ -39,9 +39,9 @@ public class AdminPage {
     public static List<Tenant> seeReservations() throws SQLException {
         List<Tenant> tenantList = new ArrayList<>();
         ConectionClass c=new ConectionClass();
-        ResultSet result = c.getStmt().executeQuery("select id_house,id_apart,idtenant,name,phone,email from tenant");
+        ResultSet result = c.getStmt().executeQuery("select id_house,id_apart,idtenant,name,phone,email,age,universityMajor from tenant");
         while (result.next()) {
-            tenant=new Tenant(result.getInt("id_house"),result.getInt("id_apart"),result.getInt("idtenant"), result.getString("name"),result.getInt("phone"),result.getString("email"));
+            tenant=new Tenant(result.getInt("id_house"),result.getInt("id_apart"),result.getInt("idtenant"), result.getString("name"),result.getInt("phone"),result.getString("email"),result.getInt("age"),result.getString("universityMajor"));
             tenantList.add(tenant);
         }
 
@@ -50,11 +50,11 @@ public class AdminPage {
     }
 
     private static void displayReservation(Tenant t) {
-        logger.info(t.getIdHouse()+"\t\t\t"+t.getIdApart()+"\t\t"+t.getIdTenant()+"\t"+t.getName()+"\t\t 0"+t.getPhone()+","+t.getEmail()+"\n");
+        logger.info(t.getIdHouse()+"\t\t\t"+t.getIdApart()+"\t\t"+t.getIdTenant()+"\t"+t.getName()+"\t\t 0"+t.getPhone()+","+t.getEmail()+"\t\t 0"+t.getAge()+","+t.getUniversityMajor()+"\n");
     }
 
     public static void displayReservations(List<Tenant> tenant) throws SQLException {
-        logger.info("House id\t Apart id\t Tenant id\t Tenant name\t contact Info of tenant (Phone & Email)\n ");
+        logger.info("House id\t Apart id\t Tenant id\t Tenant name\t contact Info of tenant (Phone & Email)\t Tenant's age\t Tenant's university Major ");
         for(Tenant t:tenant)
         {
             displayReservation(t);
