@@ -33,7 +33,6 @@ Feature: Book Accommodation
     Then I should receive a message indicating that the apartment is full
 
 
-
   Scenario: View student apartment information
     Given I am a logged-in tenant
     And I have selected a student apartment
