@@ -11,6 +11,16 @@ public class Login {
     private boolean isLoggedin;
     private int ownerID;
     private String ownerName;
+    private int tenantID;
+    private String tenantName;
+
+    public int getTenantID() {
+        return tenantID;
+    }
+
+    public String getTenantName() {
+        return tenantName;
+    }
 
     public void setLoggedin(boolean loggedin) {
         isLoggedin = loggedin;
@@ -61,6 +71,8 @@ public class Login {
                 if (result.getString("username").equals(username) && result.getString("password").equals(password)) {
                     login();
                     if(userChoice.equals("3")){ ownerID=result.getInt("idowner"); ownerName=result.getString("name");
+                    }
+                    else if(userChoice.equals("2")){ tenantID=result.getInt("idtenant"); tenantName=result.getString("name");
                     }
                     break;
                 }

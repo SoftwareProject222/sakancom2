@@ -1,63 +1,78 @@
 package model.classes;
+//
+//import java.awt.*;
+//import java.io.IOException;
+//import java.net.URI;
+//import java.net.URISyntaxException;
+//import java.sql.Connection;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
+//import java.sql.Statement;
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import static model.classes.House.logger;
+
+import code.classes.AdminPage;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import static model.classes.House.logger;
+import java.util.logging.Logger;
 
 public class Tenant {
     private int idTenant;
 
-    private static String name;
-    private static int phone;
-    private static String email;
+    private String name;
+    private int phone;
+    private String email;
     private int idApart;
 
     private int idHouse;
-
+    static House house;
+    static HouseFloor apart;
+    static Tenant student;
+    private static Logger logger = Logger.getLogger(Tenant.class.getName());
 
     private int age;
 
-
-    private String universityMajor;
-    private List<String> advertisedFurniture;
+    private String major;
 
 
-    public Tenant(int idTenant, int idApart, int idtenant, String name, int phone, String email, int age, String universityMajor) {
+
+    public Tenant(int idHouse, int idApart,int idTenant, String name, int phone, String email ) {
         this.idTenant = idTenant;
-        this.idApart = 0;
-        this.idHouse = 0;
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.age = age;
-        this.universityMajor = universityMajor;
-        this.advertisedFurniture = new ArrayList<>();
+        this.idApart = idApart;
+        this.idHouse = idHouse;
     }
 
-
+    public Tenant(int idApart, int age, String major) {
+        this.idApart = idApart;
+        this.age = age;
+        this.major = major;
+    }
 
     public int getIdTenant() {
         return idTenant;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static int getPhone() {
+    public int getPhone() {
         return phone;
     }
 
-    public static String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -65,71 +80,94 @@ public class Tenant {
         return idApart;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public String getMajor() {
+        return major;
+    }
 
     public int getIdHouse() {
         return idHouse;
     }
 
-    public int getAge() {
-        return age;
+    public static Desktop seeAdvertisements() {
+        Desktop d = Desktop.getDesktop();
+        return d;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public static void openAdvertisements(Desktop d) throws URISyntaxException, IOException {
+        String uri = "http://localhost/sakancom/table_tenent.php";
+        d.browse(new URI(uri));
     }
 
-    public String getUniversityMajor() {
-        return universityMajor;
-    }
-
-    public void setUniversityMajor(String universityMajor) {
-        this.universityMajor = universityMajor;
-    }
-
-    public static Tenant getTenantDetails(int houseId, int tenantId) throws SQLException {
-        ConectionClass c = new ConectionClass();
-        ResultSet result = c.getStmt().executeQuery("SELECT * FROM tenant WHERE id_house = " + houseId + " AND idtenant = " + tenantId);
-
-        Tenant tenant = null;
-        if (result.next()) {
-            tenant = new Tenant(
-                    result.getInt("idtenant"),
-                    result.getInt("id_apart"), result.getInt("idtenant"), result.getString("name"),
-                    result.getInt("phone"),
-                    result.getString("email"),
-                    result.getInt("age"), // Assuming 'age' is a column in the 'tenant' table
-                    result.getString("university_major") // Assuming 'university_major' is a column in the 'tenant' table
-            );
+    public static List<House> seeHousing() throws SQLException {
+        List<House> houseList = new ArrayList<>();
+        ConectionClass c=new ConectionClass();
+        ResultSet result = c.getStmt().executeQuery("select idhouse,location,services,price,no_floors from house");
+        while (result.next()) {
+            house=new House(result.getInt("idhouse"),result.getString("location"),result.getString("services"), result.getDouble("price"),result.getInt("no_floors"));
+            houseList.add(house);
         }
-
-        c.getCon().close();
-        return tenant;
+        return houseList;
     }
 
-   public int advertiseFurniture(String furnitureName, String description, double price) throws SQLException {
-        ConectionClass connectionClass = new ConectionClass();
-        Connection connection = connectionClass.getCon();
-        Statement stmt = null;
-        int furnitureId = -1;
-
-        try {
-            stmt = connection.createStatement();
-            String insertFurnitureQuery = "INSERT INTO furniture (tenant_id, furniture_name, description, price) " +
-                    "VALUES (" + idTenant + ", '" + furnitureName + "', '" + description + "', " + price + ")";
-            stmt.executeUpdate(insertFurnitureQuery, Statement.RETURN_GENERATED_KEYS);
-
-            ResultSet generatedKeys = stmt.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                furnitureId = generatedKeys.getInt(1);
-            }
-        } finally {
-            // Close the resources properly
-            if (stmt != null) {
-                stmt.close();
-            }
-            connection.close();
+    public static void displayHousing(List<House> houses) {
+        logger.info("House id\t Location\t Services\t Price\t Number of floors\n ");
+        for(House h:houses)
+        {
+            printHousing(h);
         }
+    }
 
-        return furnitureId;
+    public static void printHousing(House h) {
+        logger.info(h.getId()+"\t\t\t"+h.getLocation()+"\t\t"+h.getServices()+"\t"+h.getPrice()+"JD\t\t"+h.getNoOfFloors()+"\n");
+    }
+
+    public static List<HouseFloor> seeAvailableAparts() throws SQLException {
+        List<HouseFloor> apartList = new ArrayList<>();
+        ConectionClass c=new ConectionClass();
+        ResultSet result = c.getStmt().executeQuery("SELECT a.* FROM house_floor a LEFT JOIN tenant t ON a.id_apart = t.id_apart GROUP BY a.id_apart, a.id_house, a.id_floor,a.no_bathrooms,a.no_bedrooms,a.balcony HAVING COUNT(t.idtenant) < 4");
+        while (result.next()) {
+            apart=new HouseFloor(result.getInt("id_house"),result.getInt("id_floor"),result.getInt("id_apart"), result.getInt("no_bathrooms"),result.getInt("no_bedrooms"),result.getString("balcony"));
+            apartList.add(apart);
+        }
+        return apartList;
+    }
+
+    public static void displayAparts(List<HouseFloor> apartments) {
+        logger.info("Apartment id\t House id\t Floor id\t Number of bathrooms\t Number of bedrooms\t Has a balcony?\n");
+        for(HouseFloor hf:apartments)
+        {
+            printAparts(hf);
+        }
+    }
+
+    private static void printAparts(HouseFloor hf) {
+        logger.info(hf.getIdApart()+"\t "+hf.getIdHouse()+"\t "+hf.getIdFloor()+"\t"+hf.getNoBathrooms()+"\t"+hf.getNoBedrooms()+"\t"+hf.getBalcony()+"\n");
+    }
+    public static List<Tenant> seeStudentAparts() throws SQLException {
+        List<Tenant> studentList = new ArrayList<>();
+        ConectionClass c=new ConectionClass();
+        ResultSet result = c.getStmt().executeQuery("select id_apart,age,major from tenant WHERE isStudent='yes'");
+        while (result.next()) {
+            student=new Tenant(result.getInt("id_apart"),result.getInt("age"),result.getString("major"));
+            studentList.add(student);
+        }
+        return studentList;
+    }
+
+    public static void displayStudentAparts(List<Tenant> student) {
+        logger.info("In these apartments there is students which their ages and majors as shown:");
+        logger.info("Apartment id\t Age id\t Major\n");
+        for(Tenant s:student)
+        {
+            printStudent(s);
+        }
+    }
+
+    private static void printStudent(Tenant s) {
+        logger.info(s.getIdApart()+"\t "+s.getAge()+"\t "+s.getMajor()+"\n");
     }
 }

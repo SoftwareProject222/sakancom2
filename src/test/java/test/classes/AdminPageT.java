@@ -13,6 +13,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class AdminPageT {
+
     Login obj;
     public AdminPageT() {
         this.obj=new Login();
