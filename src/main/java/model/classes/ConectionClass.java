@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class ConectionClass {
     static String url="jdbc:mysql://localhost:3306/sakancom";
     static String user="root";
-    static String p="mydatabase@L1";
+    static String p="memesa32002@";
     private Statement stmt;
     private Connection con;
 

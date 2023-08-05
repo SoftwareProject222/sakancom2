@@ -75,7 +75,6 @@ public class House {
 
 
 
-
     public static boolean findHouseId(int idhouse) throws SQLException {
         boolean ret=false;
         ConectionClass c=new ConectionClass();

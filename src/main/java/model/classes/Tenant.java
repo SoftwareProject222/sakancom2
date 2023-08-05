@@ -29,11 +29,11 @@ public class Tenant {
     private int idTenant;
 
     private String name;
-    private int phone;
+    private Integer phone;
     private String email;
-    private int idApart;
+    private Integer idApart;
 
-    private int idHouse;
+    private Integer idHouse;
     static House house;
     static HouseFloor apart;
     static Tenant student;
@@ -43,9 +43,15 @@ public class Tenant {
 
     private String major;
 
+    private String contact;
 
 
-    public Tenant(int idHouse, int idApart,int idTenant, String name, int phone, String email ) {
+
+    public String getContact() {
+        return contact;
+    }
+
+    public Tenant(int idHouse, int idApart, int idTenant, String name, int phone, String email ) {
         this.idTenant = idTenant;
         this.name = name;
         this.phone = phone;
@@ -60,6 +66,15 @@ public class Tenant {
         this.major = major;
     }
 
+    public Tenant(String email,String name, String contact, Integer houseId, Integer apartId) {
+        this.name = name;
+        this.contact = contact;
+        this.email = email;
+        this.idHouse = houseId;
+        this.idApart = apartId;
+    }
+
+
     public int getIdTenant() {
         return idTenant;
     }
@@ -68,7 +83,7 @@ public class Tenant {
         return name;
     }
 
-    public int getPhone() {
+    public Integer getPhone() {
         return phone;
     }
 
@@ -76,7 +91,7 @@ public class Tenant {
         return email;
     }
 
-    public int getIdApart() {
+    public Integer getIdApart() {
         return idApart;
     }
 
@@ -88,7 +103,7 @@ public class Tenant {
         return major;
     }
 
-    public int getIdHouse() {
+    public Integer getIdHouse() {
         return idHouse;
     }
 
@@ -160,7 +175,7 @@ public class Tenant {
 
     public static void displayStudentAparts(List<Tenant> student) {
         logger.info("In these apartments there is students which their ages and majors as shown:");
-        logger.info("Apartment id\t Age id\t Major\n");
+        logger.info("Apartment id\t Age\t Major\n");
         for(Tenant s:student)
         {
             printStudent(s);
@@ -170,4 +185,43 @@ public class Tenant {
     private static void printStudent(Tenant s) {
         logger.info(s.getIdApart()+"\t "+s.getAge()+"\t "+s.getMajor()+"\n");
     }
+
+    public static void bookAccommodation(Tenant tenant) throws SQLException {
+        ConectionClass c=new ConectionClass();
+        String bookHouse="UPDATE tenant SET id_apart='"+tenant.getIdApart()+"', time_to_pay = 'After 3 days from now', id_house = '"+tenant.getIdHouse()+"' WHERE email ='"+tenant.getEmail()+"'";
+        c.getStmt().executeUpdate(bookHouse);
+        logger.info("Book accommodation has been completed successfully");
+        c.getCon().close();
+    }
+
+
+    public static void printControlPanel( Tenant tenant) throws SQLException {
+        ConectionClass c=new ConectionClass();
+        String tenantData="*** PERSONAL DATA ***";
+        String name="Name: "+tenant.getName();
+        String contact="Contact info.: "+tenant.getContact();
+        String time="Time to pay: ";
+
+        ResultSet result = c.getStmt().executeQuery("SELECT time_to_pay FROM tenant WHERE email ='"+tenant.getEmail()+"'");
+        while (result.next()) {
+            time=time+result.getString("time_to_pay");
+        }
+
+        String output=tenantData+"\n"+name+"\n"+contact+"\n"+time;
+        logger.info(output);
+
+        String ownerData="*** OWNER INFORMATION ***";
+        String ownerName="Name: ";
+        String ownerContact="Contact info.: ";
+
+        ConectionClass c2=new ConectionClass();
+        ResultSet result2 = c2.getStmt().executeQuery("SELECT name,email,phone FROM owner WHERE idowner = (SELECT id_owner FROM house WHERE idhouse = '"+tenant.getIdHouse()+"')");
+        while (result2.next()) {
+            ownerName=ownerName+result2.getString("name");
+            ownerContact=ownerContact+result2.getString("email")+", "+"0"+result2.getInt("phone");
+        }
+        String output2=ownerData+"\n"+ownerName+"\n"+ownerContact;
+        logger.info(output2);
+    }
+
 }

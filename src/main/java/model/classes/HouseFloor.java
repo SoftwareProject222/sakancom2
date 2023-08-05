@@ -43,6 +43,7 @@ public class HouseFloor {
         this.balcony = balcony;
     }
 
+
     public static boolean findHouseFloorId(int idhouse) throws SQLException {
         boolean ret = false;
 

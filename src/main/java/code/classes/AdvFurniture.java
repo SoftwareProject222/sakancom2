@@ -53,8 +53,8 @@ public class AdvFurniture {
 
     public static void addFurniture(AdvFurniture furniture) throws SQLException {
         ConectionClass c=new ConectionClass();
-        String insertHouse="INSERT INTO furniture (`tenant_id`, `tenant_name`, `furniture_name`,`description`,price) VALUES('"+furniture.getTenantID()+"','"+furniture.getTenantName()+"','"+furniture.getFurnitureName()+"','"+furniture.getDescription()+"','"+furniture.getPrice()+"')";
-        c.getStmt().executeUpdate(insertHouse);
+        String insertFurniture="INSERT INTO furniture (`tenant_id`, `tenant_name`, `furniture_name`,`description`,price) VALUES('"+furniture.getTenantID()+"','"+furniture.getTenantName()+"','"+furniture.getFurnitureName()+"','"+furniture.getDescription()+"','"+furniture.getPrice()+"')";
+        c.getStmt().executeUpdate(insertFurniture);
         logger.info("Furniture added successfully");
         c.getCon().close();
     }

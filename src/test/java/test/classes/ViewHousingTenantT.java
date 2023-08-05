@@ -7,8 +7,6 @@ import io.cucumber.java.en.When;
 import model.classes.House;
 import model.classes.HouseFloor;
 import model.classes.Tenant;
-import org.junit.TestCouldNotBeSkippedException;
-
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -71,5 +69,5 @@ public class ViewHousingTenantT {
     public void a_table_of_apartments_age_and_major_will_printed() {
         Tenant.displayStudentAparts(student);
     }
- 
+
 }
