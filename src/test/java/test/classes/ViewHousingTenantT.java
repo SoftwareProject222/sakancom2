@@ -71,5 +71,5 @@ public class ViewHousingTenantT {
     public void a_table_of_apartments_age_and_major_will_printed() {
         Tenant.displayStudentAparts(student);
     }
-
+ 
 }
