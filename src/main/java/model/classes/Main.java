@@ -1,8 +1,6 @@
 package model.classes;
-import code.classes.AddAdvertisement;
-import code.classes.AdminPage;
-import code.classes.Login;
-import code.classes.OwnerControlPanel;
+import code.classes.*;
+
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -77,7 +75,7 @@ public class Main {
                 } else if (choice.equals("3")) {
                     handleOwnerTasks(log, scan);
                 } else if (choice.equals("2")) {
-                    handleTenantTasks();
+                    handleTenantTasks(log, scan);
                 }
             }
         }
@@ -375,7 +373,96 @@ public class Main {
     }
 
 
-    private static void handleTenantTasks() {
-        logger.info("Tenant functionality is not implemented yet.");
+    private static void handleTenantTasks(Login log, Scanner scan) throws SQLException, URISyntaxException, IOException {
+        String hello = "Hello " + log.getTenantName();
+        logger.info(hello);
+        List<House> houseList = new ArrayList<>();
+        List<HouseFloor> apartList = new ArrayList<>();
+        List<Tenant> studentList = new ArrayList<>();
+
+        while (true) {
+            displayTenantOptions();
+            String tenantChoice = scan.nextLine();
+
+            switch (tenantChoice) {
+                case "1":
+                    Desktop d = Desktop.getDesktop();
+                    Tenant.openAdvertisements(d);
+                    break;
+                case "2":
+                    logger.info("**** ALL HOUSES ***");
+                    houseList= Tenant.seeHousing();
+                    Tenant.displayHousing(houseList);
+
+                    logger.info("**** AVAILABLE APARTMENTS ***");
+                    apartList= Tenant.seeAvailableAparts();
+                    Tenant.displayAparts(apartList);
+
+                    logger.info("**** STUDENT APARTMENTS ***");
+                    studentList= Tenant.seeStudentAparts();
+                    Tenant.displayStudentAparts(studentList);
+                    break;
+                case "3":
+                    logger.info("SEE THE HOUSES TO CHOOSE WHICH YOU WANT TO BOOK");
+                    logger.info("**** AVAILABLE APARTMENTS ***");
+                    apartList= Tenant.seeAvailableAparts();
+                    Tenant.displayAparts(apartList);
+
+                    logger.info("**** STUDENT APARTMENTS ***");
+                    studentList= Tenant.seeStudentAparts();
+                    Tenant.displayStudentAparts(studentList);
+
+                    logger.info("--- ENTER THE REQUIRED INFORMATION FOR RESERVATION --- ");
+                    logger.info("Enter your email: ");
+                    String email = scan.nextLine();
+                    logger.info("Enter your name: ");
+                    String name = scan.nextLine();
+                    logger.info("Enter your contact information: ");
+                    String contact = scan.nextLine();
+                    logger.info("Enter house id you chose it: ");
+                    String houseId = scan.nextLine();
+                    logger.info("Enter apartment id you want to reserve it: ");
+                    String apartId = scan.nextLine();
+
+                    Tenant tenant=new Tenant(email,name,contact,Integer.parseInt(houseId),Integer.parseInt(apartId));
+                    Tenant.bookAccommodation(tenant);
+
+                    Tenant.printControlPanel(tenant);
+
+                    break;
+                case "4":
+                    logger.info("--- ENTER THE REQUIRED INFORMATION FOR ADVERTISE FURNITURE --- ");
+                    logger.info("Enter furniture name: ");
+                    String fName = scan.nextLine();
+                    logger.info("Enter description about it: ");
+                    String description = scan.nextLine();
+                    logger.info("Enter the price: ");
+                    String price = scan.nextLine();
+                    AdvFurniture furniture=new AdvFurniture(log.getTenantID(), log.getTenantName(),fName,description,Double.parseDouble(price));
+                    AdvFurniture.addFurniture(furniture);
+                    break;
+
+                case "5":
+                    List<AdvFurniture> furnitures;
+                    furnitures=AdvFurniture.seeFurniture();
+                    AdvFurniture.displayFurnitures(furnitures);
+                    break;
+                case "6":
+                    log.logout();
+                    return;
+                default:
+                    logger.warning(IN_VALID_INPUT);
+                    break;
+            }
+        }
+    }
+
+    private static void displayTenantOptions() {
+        logger.info("1- See the advertisement of available housing");
+        logger.info("2- See the available housing with information");
+        logger.info("3- Book accommodation");
+        logger.info("4- Advertise used furniture for sale");
+        logger.info("5- View furniture for sale");
+        logger.info("6- Log out");
     }
 }

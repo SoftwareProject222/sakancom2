@@ -19,7 +19,6 @@ public class BookAccommodationT {
     List<HouseFloor> apartments;
     List<Tenant> student;
     Tenant tenant;
-    HouseFloor houseFloor;
     private String email;
     private String tenantName;
     private String contact;

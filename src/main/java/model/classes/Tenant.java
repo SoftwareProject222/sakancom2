@@ -196,16 +196,11 @@ public class Tenant {
 
 
     public static void printControlPanel( Tenant tenant) throws SQLException {
-        ConectionClass c=new ConectionClass();
+
         String tenantData="*** PERSONAL DATA ***";
         String name="Name: "+tenant.getName();
         String contact="Contact info.: "+tenant.getContact();
-        String time="Time to pay: ";
-
-        ResultSet result = c.getStmt().executeQuery("SELECT time_to_pay FROM tenant WHERE email ='"+tenant.getEmail()+"'");
-        while (result.next()) {
-            time=time+result.getString("time_to_pay");
-        }
+        String time="Time to pay: After 3 days from now";
 
         String output=tenantData+"\n"+name+"\n"+contact+"\n"+time;
         logger.info(output);
