@@ -1,8 +1,5 @@
 package code.classes;
-
 import model.classes.ConectionClass;
-import model.classes.House;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,7 +14,7 @@ public class AdvFurniture {
     String description;
     Double price;
     static AdvFurniture advFurniture;
-    public static Logger logger = Logger.getLogger(AdvFurniture.class.getName());
+    private static Logger logger = Logger.getLogger(AdvFurniture.class.getName());
 
     public AdvFurniture(int tenantID, String tenantName, String furnitureName, String description, Double price) {
         this.tenantID = tenantID;

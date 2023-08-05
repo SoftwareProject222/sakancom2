@@ -1,7 +1,5 @@
 package model.classes;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 public class House {
     private int id;
@@ -13,7 +11,7 @@ public class House {
     private int noOfFloors;
     private int noOfTenant;
 
-    public static Logger logger = Logger.getLogger(House.class.getName());
+    private static Logger logger = Logger.getLogger(House.class.getName());
     public House() {
     }
     public House(int id, String link, String location, String services, Double price, int ownerId, int noOfFloors) {

@@ -1,20 +1,4 @@
 package model.classes;
-//
-//import java.awt.*;
-//import java.io.IOException;
-//import java.net.URI;
-//import java.net.URISyntaxException;
-//import java.sql.Connection;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.sql.Statement;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import static model.classes.House.logger;
-
-import code.classes.AdminPage;
-
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
@@ -108,8 +92,7 @@ public class Tenant {
     }
 
     public static Desktop seeAdvertisements() {
-        Desktop d = Desktop.getDesktop();
-        return d;
+        return Desktop.getDesktop();
     }
 
     public static void openAdvertisements(Desktop d) throws URISyntaxException, IOException {
@@ -211,10 +194,15 @@ public class Tenant {
 
         ConectionClass c2=new ConectionClass();
         ResultSet result2 = c2.getStmt().executeQuery("SELECT name,email,phone FROM owner WHERE idowner = (SELECT id_owner FROM house WHERE idhouse = '"+tenant.getIdHouse()+"')");
+        StringBuilder ownerNameBuilder = new StringBuilder();
+        StringBuilder ownerContactBuilder = new StringBuilder();
         while (result2.next()) {
-            ownerName=ownerName+result2.getString("name");
-            ownerContact=ownerContact+result2.getString("email")+", "+"0"+result2.getInt("phone");
+            ownerNameBuilder.append(result2.getString("name"));
+            ownerContactBuilder.append(result2.getString("email")).append(", ").append("0").append(result2.getInt("phone"));
         }
+         ownerName += ownerNameBuilder.toString();
+         ownerContact += ownerContactBuilder.toString();
+
         String output2=ownerData+"\n"+ownerName+"\n"+ownerContact;
         logger.info(output2);
     }

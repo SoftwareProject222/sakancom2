@@ -18,6 +18,8 @@ public class Main {
     private static String price = "price";
     private static String services = "services";
     private static String username;
+
+    private static String helloS="Hello ";
     public static void displayAllHouses() throws SQLException {
         ConectionClass c=new ConectionClass();
         ResultSet result = c.getStmt().executeQuery("select * from house");
@@ -102,7 +104,7 @@ public class Main {
     }
 
     private static void handleAdminTasks(Login log, Scanner scan) throws URISyntaxException, IOException, SQLException {
-        String hello = "Hello " + username;
+        String hello = helloS+ username;
         logger.info(hello);
         House updateHouse = new House();
 
@@ -172,7 +174,7 @@ public class Main {
         logger.info("Enter the ID of the house for updating: ");
         String idhouse = scan.nextLine();
         if (!House.findHouseId(Integer.parseInt(idhouse))) {
-            updateHouse.unupdatedMsg();
+            House.unupdatedMsg();
             return;
         }
 
@@ -184,17 +186,17 @@ public class Main {
                 logger.info("The new services of the house you want to update: ");
                 String services = scan.nextLine();
                 updateHouse.updateInfo(Main.services, services, Integer.parseInt(idhouse));
-                updateHouse.updateMsg();
+                House.updateMsg();
             } else if (updateOption.equals("2")) {
                 logger.info("The new price of the house you want to update: ");
                 String price = scan.nextLine();
                 updateHouse.updateInfo(Main.price, Double.parseDouble(price), Integer.parseInt(idhouse));
-                updateHouse.updateMsg();
+                House.updateMsg();
             } else if (updateOption.equals("3")) {
                 logger.info("The new ownerId of the house you want to update: ");
                 String ownerid = scan.nextLine();
                 updateHouse.updateInfo("ownerId", Integer.parseInt(ownerid), Integer.parseInt(idhouse));
-                updateHouse.updateMsg();
+                House.updateMsg();
             } else if (updateOption.equals("4")) {
                 return;
             } else {
@@ -213,7 +215,7 @@ public class Main {
 
 
     private static void handleOwnerTasks(Login log, Scanner scan) throws SQLException {
-        String hello = "Hello " + log.getOwnerName();
+        String hello = helloS + log.getOwnerName();
         logger.info(hello);
 
         while (true) {
@@ -374,7 +376,7 @@ public class Main {
 
 
     private static void handleTenantTasks(Login log, Scanner scan) throws SQLException, URISyntaxException, IOException {
-        String hello = "Hello " + log.getTenantName();
+        String hello = helloS + log.getTenantName();
         logger.info(hello);
         List<House> houseList = new ArrayList<>();
         List<HouseFloor> apartList = new ArrayList<>();
