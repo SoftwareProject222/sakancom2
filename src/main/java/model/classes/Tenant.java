@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static model.classes.House.logger;
-
 public class Tenant {
     private int idTenant;
 
@@ -82,6 +81,7 @@ public class Tenant {
         return universityMajor;
     }
 
+
     public void setUniversityMajor(String universityMajor) {
         this.universityMajor = universityMajor;
     }
@@ -116,7 +116,7 @@ public class Tenant {
             stmt = connection.createStatement();
             String insertFurnitureQuery = "INSERT INTO furniture (tenant_id, furniture_name, description, price) " +
                     "VALUES (" + idTenant + ", '" + furnitureName + "', '" + description + "', " + price + ")";
-            stmt.executeUpdate(insertFurnitureQuery, Statement.RETURN_GENERATED_KEYS);
+            int i = stmt.executeUpdate(insertFurnitureQuery, Statement.RETURN_GENERATED_KEYS);
 
             ResultSet generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {

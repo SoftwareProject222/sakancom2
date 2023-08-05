@@ -16,16 +16,17 @@ public class TenantControlPanelT {
     private String residenceOwnerContactInfo;
     private String rentDueDate;
 
-  /*  @Given("I have booked accommodation")
+  @Given("I have booked accommodation")
     public void iHaveBookedAccommodation() throws SQLException {
         // For testing purposes, let's assume the tenant has booked an accommodation
         // and we have the house and tenant objects available
-        house = new House(1, "images/1.jpg", "Location A", "Services: Wifi, AC", 1500.0, 101, 2);
-        Tenant tenant = new Tenant(house.getId(), 0, 1, "Tenant Name", 1234567890, "tenant@email.com");
-        house.addTenant(house.getId(), tenant);
-        house.updateNoOfTenant(house.getId(), 1);
+        house = new House(1127, "images/1.jpg", "Location A", "Services: Wifi, AC", 1500.0, 101, 2);
+      Tenant tenant = new Tenant(7971, 0, 0, "Leen", 1234567890, "leenbatt@example.com", 25, "Computer Science");
+
+      House.addTenant(house.getId(), tenant);
+        House.updateNoOfTenant(house.getId(), 1);
     }
-*/
+
     @When("I access the tenant control panel")
     public void iAccessTheTenantControlPanel() {
         ownerId = house.getOwnerId();
@@ -87,7 +88,6 @@ public class TenantControlPanelT {
             logger.info("Error: You have not booked any accommodation.");
         }
     }
-
     @Then("I should receive an error message indicating no booking")
     public void iShouldReceiveAnErrorMessageIndicatingNoBooking() {
         logger.info("Error: You have not booked any accommodation so you can't access the control panel.");

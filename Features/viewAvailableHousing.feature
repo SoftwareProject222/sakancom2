@@ -3,7 +3,7 @@ Feature: View Housing
   Scenario: View available housing
     Given I am a logged-in tenant
     When I access the housing section
-    Then I should be able to view the available housing
+    Then I should be able to view the available housing in ViewHousingT
 
 
   Scenario: View housing details as a logged-in tenant

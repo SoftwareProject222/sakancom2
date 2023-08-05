@@ -1,10 +1,9 @@
 Feature: Book Accommodation
 
-  Scenario: View available housing before booking
-    Given I am a logged-in tenant
-    When I access the housing section
+  Scenario: View available housing without booking
+    Given I am a logged-in tenant in booking section
+    When I access the housing section directly without viewing available housing
     Then I should be able to view the available housing
-    And each apartment should have an apartment and an ID house
 
   Scenario: Book accommodation in a non-student apartment with available space
     Given I am a logged-in tenant

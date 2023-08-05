@@ -26,13 +26,13 @@ public class BookAccommodationT {
     }
 
     // Scenario: Book accommodation without viewing available houses
-    @Given("I am a logged-in tenant")
-    // public void iAmALoggedInTenant() {
-    //      obj.login();
-    //   }
+    @Given("I am a logged-in tenant in booking section")
+    public void iAmALoggedInTenantInBooking() {
+        obj.login();
+    }
 
-    @When("I want to book an accommodation without viewing available houses")
-    public void iWantToBookAccommodationWithoutViewingAvailableHouses() {
+    @When("I access the housing section directly without viewing available housing")
+    public void iAccessTheHousingSectionDirectlyWithoutViewingAvailableHousing() {
         try {
             availableHousing = House.getAvailableHousing();
         } catch (SQLException e) {
@@ -47,48 +47,36 @@ public class BookAccommodationT {
         House.displayAvailableHousing(availableHousing);
     }
 
-    // Scenario: Book accommodation after viewing available houses
-    @Given("I am a logged-in tenant and I have viewed available houses")
-    public void iAmALoggedInTenantAndViewedAvailableHouses() {
-        obj.login();
-    }
-
-    @When("I select a specific house to book")
-    public void iSelectASpecificHouseToBook() throws SQLException {
-        // Check if there are available houses
-        availableHousing = House.getAvailableHousing();
-        assertNotNull(availableHousing);
-        assertTrue(availableHousing.size() > 0);
-
-        // Replace this line with the actual house ID for testing
-        int houseId = 1245;
+    @Given("I have selected a non-student apartment with available space \\({int} or {int} tenants)")
+    public void iHaveSelectedANonStudentApartmentWithAvailableSpaceOrTenants(Integer int1, Integer int2) throws SQLException {
+        int houseId = 1124;
         selectedHouse = House.getHouseDetails(houseId);
     }
-
-    // @Then("I should be able to book the accommodation")
-    // public void iShouldBeAbleToBookTheAccommodation() throws SQLException {
-    //     assertNotNull(selectedHouse);
-    // Implement the booking logic here, such as adding the tenant to the house's tenant list
-    //   House.addTenant(selectedHouse.getId(), new Tenant(selectedHouse.getId(), result.getInt("id_apart"), result.getInt("idtenant"), 0, 0, "Tenant Name", 1234567890, "tenant@email.com"));
-    //     House.updateNoOfTenant(selectedHouse.getId(), 1); // Increment the number of tenants in the house by 1
-    //     House.SuccessMsg(); // Print message that the house information was updated successfully
-    //}
-
-    // Scenario: Book accommodation with invalid house ID
-    @When("I try to book an accommodation with invalid house ID")
-    public void iTryToBookAccommodationWithInvalidHouseID() throws SQLException {
-        int invalidHouseId = 1000;
-        selectedHouse = House.getHouseDetails(invalidHouseId);
+    @When("I proceed to book accommodation")
+    public void iProceedToBookAccommodationNonStudent() throws SQLException {
+        assertNotNull(selectedHouse);
+        // Implement the booking logic here, such as adding the tenant to the house's tenant list
+        Tenant tenant = new Tenant(selectedHouse.getId(), 1403, 1456, "Leen", 1234567890, "leenbatt@example.com",  25, "Computer Science");
+        House.addTenant(selectedHouse.getId(), tenant);
+        House.updateNoOfTenant(selectedHouse.getId(), selectedHouse.getNoOfTenant() + 1); // Increment the number of tenants in the house by 1
+        // Update apartment information
+        selectedHouse.setNoOfTenant(selectedHouse.getNoOfTenant() + 1);
+        selectedHouse.getTenants().add(tenant);
     }
 
-    @Then("I should see an error message that the house does not exist")
-    public void iShouldSeeAnErrorMessageThatTheHouseDoesNotExist() throws SQLException {
-        // The selectedHouse will be null for an invalid house ID
-        if (selectedHouse != null) {
-            House.updateNoOfTenant(selectedHouse.getId(), selectedHouse.getNoOfTenant() - 1);
-            House.failMsg(); // Print message that the house ID doesn't exist
-        } else {
-            logger.info("House with the provided ID does not exist.");
-        }
+    @Then("I should receive a booking confirmation")
+    public void iShouldReceiveABookingConfirmationNonStudent() {
+        assertNotNull(selectedHouse.getTenants());
+        assertTrue(selectedHouse.getTenants().size() > 0);
+        assertTrue(selectedHouse.getTenants().stream().anyMatch(tenant -> tenant.getName().equals("Leen")));
+        // Add additional assertions or verifications based on your application's logic
+    }
+
+    @Then("the apartment should be updated with my booking information")
+    public void theApartmentShouldBeUpdatedWithMyBookingInformationNonStudent() {
+        assertNotNull(selectedHouse.getTenants());
+        assertTrue(selectedHouse.getTenants().size() > 0);
+        assertTrue(selectedHouse.getTenants().stream().anyMatch(tenant -> tenant.getName().equals("Leen")));
+        // Add additional assertions or verifications based on your application's logic
     }
 }

@@ -7,11 +7,17 @@ public class House {
     private int id;
     private String link;
     private String location;
+
+    public void setServices(String services) {
+        this.services = services;
+    }
+
     private String services;
     private Double price;
     private int ownerId;
     private int noOfFloors;
     private int noOfTenant;
+    private List<Tenant> tenants;
 
     public static Logger logger = Logger.getLogger(House.class.getName());
     public House() {
@@ -24,6 +30,7 @@ public class House {
         this.price = price;
         this.ownerId = ownerId;
         this.noOfFloors = noOfFloors;
+        this.tenants = new ArrayList<>();
     }
 
     public static List<House> getAvailableHousing() throws SQLException {
@@ -55,17 +62,21 @@ public class House {
         ConectionClass c = new ConectionClass();
         ResultSet result = c.getStmt().executeQuery("SELECT price, location, services FROM house WHERE idhouse = " + houseId);
 
-        House house = null;
+        House house = new House(
+                houseId,
+                null, // Since we are not retrieving images, set it to null
+                "",   // Initialize location to an empty string
+                "",   // Initialize services to an empty string
+                0.0,  // Initialize price to 0.0
+                0,    // Since we are not retrieving owner ID, set it to 0
+                0     // Since we are not retrieving the number of floors, set it to 0
+        );
+
         if (result.next()) {
-            house = new House(
-                    houseId,
-                    null, // Since we are not retrieving images, set it to null
-                    result.getString("location"),
-                    result.getString("services"),
-                    result.getDouble("price"),
-                    0, // Since we are not retrieving owner ID, set it to 0
-                    0 // Since we are not retrieving number of floors, set it to 0
-            );
+            // Update the fields only if the result set is not empty
+            house.setLocation(result.getString("location"));
+            house.setServices(result.getString("services"));
+            house.setPrice(result.getDouble("price"));
         }
 
         c.getCon().close();
@@ -117,7 +128,7 @@ public class House {
     }
 
     public Double getPrice() {
-        return price;
+        return this.price;
     }
 
     public int getOwnerId() {
@@ -132,9 +143,13 @@ public class House {
         return noOfTenant;
     }
 
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
-
-
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public static boolean findHouseId(int idhouse) throws SQLException {
         boolean ret=false;
@@ -197,10 +212,10 @@ public class House {
         logger.info(" Information will not Updated, since houseId doesn't exist ");
     }
     public static void SuccessMsg() {
-        logger.info("  ");
+        logger.info("your accommodation is done  ");
     }
     public static void failMsg() {
-        logger.info("  ");
+        logger.info(" sorry there is no available space ");
     }
 
 
@@ -208,8 +223,8 @@ public class House {
     public static void addTenant(int houseId, Tenant tenant) throws SQLException {
         ConectionClass c = new ConectionClass();
         String insertTenant = "INSERT INTO tenant (id_house, id_apart, idtenant, name, phone, email) VALUES " +
-                "(" + houseId + ", 0, " + tenant.getIdTenant() + ", '" + tenant.getName() + "', " +
-                tenant.getPhone() + ", '" + tenant.getEmail() + "')";
+                "(" + houseId + ", 0, " + tenant.getIdTenant() + ", '" + Tenant.getName() + "', " +
+                Tenant.getPhone() + ", '" + Tenant.getEmail() + "')";
         c.getStmt().executeUpdate(insertTenant);
         c.getCon().close();
     }
@@ -284,5 +299,14 @@ public class House {
         return rentDueDate;
     }
 
-
+    public List<Tenant> getTenants() {
+        return tenants;
+    }
+    public void displayTenantsInformation() {
+        for (Tenant tenant : tenants) {
+           logger.info("Tenant Name: " + Tenant.getName());
+            // Add other tenant information fields here
+        }
+    }
 }
+
